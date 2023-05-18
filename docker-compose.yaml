@@ -1,0 +1,34 @@
+services:
+
+  se:
+    container_name: se
+    build: .
+    restart: always
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - ./app:/app
+    ports:
+      - '8084:80'
+    networks:
+      - se_network
+    depends_on:
+      - se_mysql
+
+  se_mysql:
+    container_name: se_mysql
+    image: mysql:8.0.29
+    restart: always
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+      MYSQL_ROOT_PASSWORD: 'admin123'
+      MYSQL_DATABASE: se_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+    volumes:
+      - ./db/privileges.sql:/docker-entrypoint-initdb.d/privileges.sql
+    networks:
+      - se_network
+
+networks:
+  se_network:

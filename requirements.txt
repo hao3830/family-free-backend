@@ -1,0 +1,11 @@
+fastapi
+PyMySQL
+easydict
+pyyaml
+requests
+python-multipart
+pyjwt
+numpy
+tqdm
+multipledispatch
+cryptography

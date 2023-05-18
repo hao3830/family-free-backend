@@ -1,0 +1,5 @@
+mysql:
+  host: "se_mysql"
+  database: "se_db"
+  user: "admin"
+  password: "admin123"
