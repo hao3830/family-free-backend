@@ -18,8 +18,8 @@ class AchievementType:
     
     def json(self):
         return {
-            "id": self.id,
-            "name": self.name
+            "MALOAITHANHTICH": self.id,
+            "TENLOAITHANHTICH": self.name
         }
 
     @staticmethod

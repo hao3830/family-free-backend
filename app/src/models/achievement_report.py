@@ -23,10 +23,10 @@ class AchievementReport:
     @staticmethod
     def from_json(_json):
         return AchievementReport(
-            _json["id"],
-            _json["year"],
-            _json["id_achievement_type"],
-            _json["achievement_count"],
+            _json["MABAOCAOTHANHTICH"],
+            _json["NAM"],
+            _json["MALOAITHANHTICH"],
+            _json["SOLUONGTHANHTICH"],
         )
 
     @staticmethod

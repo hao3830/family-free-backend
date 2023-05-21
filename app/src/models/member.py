@@ -46,15 +46,15 @@ class Member:
     @staticmethod
     def from_json(_json):
         return Member(
-            _json["id"],
-            _json["name"],
-            _json["sex"],
-            _json["birthday"],
-            _json["address"],
-            _json["id_relation"],
-            _json["id_job"],
-            _json["id_home_town"],
-            _json["id_old_member"],
+            _json["MATHANHVIEN"],
+            _json["HOVATEN"],
+            _json["GIOITINH"],
+            _json["NGAYGIOSINH"],
+            _json["DIACHI"],
+            _json["MALOAIQUANHE"],
+            _json["MANGHENGHIEP"],
+            _json["MAQUEQUAN"],
+            _json["MATHANHVIENCU"],
         )
 
     @staticmethod

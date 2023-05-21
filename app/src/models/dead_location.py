@@ -5,7 +5,7 @@ from src.utils.db_helper import exec_query
 logger = getLogger("app")
 
 class DeadLocation:
-    def __ini__(self, id, name):
+    def __init__(self, id, name):
         self.id = id
         self.name = name
     def json(self):
@@ -17,8 +17,8 @@ class DeadLocation:
     @staticmethod
     def from_json(_json):
         return DeadLocation(
-            _json["id"],
-            _json["name"],
+            _json["MADIADIEMMAITANG"],
+            _json["TENDIADIEMMAITANG"],
         )
     
     @staticmethod  

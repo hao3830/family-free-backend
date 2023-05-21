@@ -19,8 +19,8 @@ class Relation:
     @staticmethod
     def from_json(_json):
         return Relation(
-            _json["id"],
-            _json["name"],
+            _json["MALOAIQUANHE"],
+            _json["TENLOAIQUANHE"],
         )
 
     @staticmethod

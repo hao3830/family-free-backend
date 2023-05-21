@@ -6,7 +6,8 @@ logger = getLogger("app")
 
 
 class Report:
-    def __init__(self, nam, soluongsinh, soluonkethon, soluongmat):
+    def __init__(self, id, nam, soluongsinh, soluonkethon, soluongmat):
+        self.id = id
         self.nam = nam
         self.soluongsinh = soluongsinh
         self.soluonkethon = soluonkethon
@@ -14,6 +15,7 @@ class Report:
 
     def json(self):
         return {
+            "id ": self.id,
             "nam ": self.nam,
             "soluongsinh ": self.soluongsinh,
             "soluonkethon ": self.soluonkethon,
@@ -23,10 +25,11 @@ class Report:
     @staticmethod
     def from_json(_json):
         return Report(
-            _json["nam"],
-            _json["soluongsinh"],
-            _json["soluonkethon"],
-            _json["soluongmat"],
+            _json["MABAOCAOTANGGIAM"],
+            _json["NAM"],
+            _json["SOLUONGSINH"],
+            _json["SOLUONKETHON"],
+            _json["SOLUONGMAT"],
         )
 
     @staticmethod

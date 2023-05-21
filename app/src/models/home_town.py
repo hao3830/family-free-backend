@@ -16,8 +16,8 @@ class HomeTown:
 
     def json(self):
         return {
-            "id": self.id,
-            "name": self.name,
+            "MALOAIQUANHE": self.id,
+            "TENLOAIQUANHE": self.name,
         }
 
     @staticmethod

@@ -4,24 +4,23 @@ from src.utils.db_helper import exec_query
 
 logger = getLogger("app")
 
+
 class Job:
-    def __ini__(self, id, name):
+    def __init__(self, id, name):
         self.id = id
         self.name = name
+
     def json(self):
         return {
             "id": self.id,
             "name": self.name,
         }
-    
+
     @staticmethod
     def from_json(_json):
-        return Job(
-            _json["id"],
-            _json["name"],
-        )
-    
-    @staticmethod  
+        return Job(id=_json["MANGHENGHIEP"], name=_json["TENNGHENGHIEP"])
+
+    @staticmethod
     def get(id):
         query = f"SELECT * FROM NGHENGHIEP WHERE MANGHENGHIEP = {id}"
         logger.info(f"executing query: {query}")
@@ -47,7 +46,7 @@ class Job:
             logger.error(f"Cannot execute query: {query}")
             logger.error(err, exc_info=True)
             return "SQLExecuteError", None
-    
+
     @staticmethod
     def insert(name):
         query = f'Insert into NGHENGHIEP (TENNGHENGHIEP) values ("{name}")'

@@ -14,10 +14,10 @@ class Achievement:
 
     def json(self):
         return {
-            "id": self.id,
-            "name": self.name,
-            "id_achievement_type": self.id_achievement_type,
-            "date": self.date,
+            "MATHANHTICH": self.id,
+            "HOVATEN": self.name,
+            "MALOAITHANHTICH": self.id_achievement_type,
+            "NGAYPHATSINH": self.date,
         }
 
     @staticmethod

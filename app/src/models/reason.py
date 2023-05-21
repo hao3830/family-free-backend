@@ -12,13 +12,13 @@ from src.utils.db_helper import exec_query
 logger = getLogger("app")
 
 class Reason:
-    def __ini__(self, id, name):
+    def __init__(self, id, name):
         self.id = id
         self.name = name
     def json(self):
         return {
-            "id": self.id,
-            "name": self.name,
+            "MANGUYENNHAN": self.id,
+            "TENNGUYENNHAN": self.name,
         }
     
     @staticmethod

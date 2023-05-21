@@ -6,7 +6,7 @@ logger = getLogger("app")
 
 
 class End:
-    def __ini__(self, id, name, dead_date, id_reason, id_dead_location):
+    def __init__(self, id, name, dead_date, id_reason, id_dead_location):
         self.id = id
         self.name = name
         self.dead_date = dead_date
@@ -25,11 +25,11 @@ class End:
     @staticmethod
     def from_json(_json):
         return End(
-            _json["id"],
-            _json["name"],
-            _json["dead_date"],
-            _json["id_reason"],
-            _json["id_dead_location"],
+            _json["MAKETTHUC"],
+            _json["HOVATEN"],
+            _json["NGAYGIOMAT"],
+            _json["MANGUYENNHAN"],
+            _json["MADIADIEMMAITANG"],
         )
 
     @staticmethod
