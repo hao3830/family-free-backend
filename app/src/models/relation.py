@@ -51,7 +51,7 @@ class Relation:
 
     @staticmethod
     def insert(name):
-        query = f'Insert into QUANHE (TENQUANHE) values ("{name}")'
+        query = f'Insert into QUANHE (TENLOAIQUANHE) values ("{name}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
