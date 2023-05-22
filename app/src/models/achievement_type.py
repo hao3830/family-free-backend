@@ -53,5 +53,12 @@ class AchievementType:
             return "SQLExecuteError", None
     
     @staticmethod
-    def insert():
-        pass
+    def insert(name):
+        query = f'Insert into LOAITHANHTICH (TENLOAITHANHTICH) values ("{name}")'
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
