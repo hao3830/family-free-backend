@@ -23,8 +23,8 @@ class HomeTown:
     @staticmethod
     def from_json(_json):
         return HomeTown(
-            _json["MALOAIQUANHE"],
-            _json["TENLOAIQUANHE"],
+            _json["MAQUEQUAN"],
+            _json["TENQUANHE"],
         )
 
     @staticmethod
