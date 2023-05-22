@@ -16,15 +16,15 @@ class HomeTown:
 
     def json(self):
         return {
-            "MALOAIQUANHE": self.id,
-            "TENLOAIQUANHE": self.name,
+            "id": self.id,
+            "name": self.name,
         }
 
     @staticmethod
     def from_json(_json):
         return HomeTown(
-            _json["id"],
-            _json["name"],
+            _json["MALOAIQUANHE"],
+            _json["TENLOAIQUANHE"],
         )
 
     @staticmethod

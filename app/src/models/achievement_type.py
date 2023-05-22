@@ -18,13 +18,13 @@ class AchievementType:
     
     def json(self):
         return {
-            "MALOAITHANHTICH": self.id,
-            "TENLOAITHANHTICH": self.name
+            "id": self.id,
+            "name": self.name
         }
 
     @staticmethod
     def from_json(_json):
-        return AchievementType(_json["id"], _json["name"])
+        return AchievementType(_json["MALOAITHANHTICH"], _json["TENLOAITHANHTICH"])
 
     @staticmethod
     def get(id):

@@ -17,15 +17,15 @@ class Reason:
         self.name = name
     def json(self):
         return {
-            "MANGUYENNHAN": self.id,
-            "TENNGUYENNHAN": self.name,
+            "id": self.id,
+            "name": self.name,
         }
     
     @staticmethod
     def from_json(_json):
         return Reason(
-            _json["id"],
-            _json["name"],
+            _json["MANGUYENNHAN"],
+            _json["TENNGUYENNHAN"],
         )
     
     @staticmethod  
