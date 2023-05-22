@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.utils import rlogger
 from routers import (
     member,
+    achievement,
     achievement_report,
     achievement_type,
     job,
@@ -61,6 +62,7 @@ logger.info("INIT LOGGER SUCCESSED")
 #  member, achievement_report, achievement_type, job, dead_location, end, home_town, reason, relation, report
 
 app.include_router(member.router)
+app.include_router(achievement.router)
 app.include_router(achievement_report.router)
 app.include_router(achievement_type.router)
 app.include_router(job.router)
