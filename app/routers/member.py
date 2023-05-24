@@ -1,5 +1,5 @@
 from logging import getLogger
-from typing import Optional
+from typing import Union, Optional
 from fastapi import APIRouter, Form
 
 from src.models.member import Member
