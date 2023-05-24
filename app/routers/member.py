@@ -1,5 +1,5 @@
 from logging import getLogger
-from typing import Union
+from typing import Optional
 from fastapi import APIRouter, Form
 
 from src.models.member import Member
@@ -38,7 +38,7 @@ def post_member(
     id_relation: int = Form(None),
     id_job: int = Form(None),
     id_home_town: int = Form(None),
-    id_old_member: Union[int, None] = Form(None),
+    id_old_member: Optional[int] = Form(None),
 ):
     error, _ = Member.insert(
         name, sex, birthday, address, id_relation, id_job, id_home_town, id_old_member
