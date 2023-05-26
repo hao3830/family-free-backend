@@ -72,10 +72,10 @@ class Report:
 
         logger.info(f"executing query: {query}")
         try:
-            _, report = exec_query(query, mode="fetchone")
-            if not report:
+            _, reports = exec_query(query, mode="fetchall")
+            if not reports:
                 return "NotFound", None
-            return None, Report.from_json(report)
+            return None, [Report.from_json(report) for report in reports]
         except Exception as err:
             logger.error(f"can not execute query: {query}")
             logger.error(err)

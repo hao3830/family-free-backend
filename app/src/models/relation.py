@@ -37,10 +37,8 @@ class Relation:
 
         logger.info(f"executing query: {query}")
         try:
-            _, realtion = exec_query(query, mode="fetchone")
-            if not realtion:
-                return "NotFound", None
-            return None, Relation.from_json(realtion)
+            _, relation = exec_query(query, mode="fetchall")
+            return None, [Relation.from_json(p) for p in relation]
 
         except Exception as err:
             logger.error(f"can not execute query: {query}")
