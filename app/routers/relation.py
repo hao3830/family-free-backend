@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import Optional
 from fastapi import APIRouter, Form
 
 from src.models.relation import Relation
@@ -10,8 +11,12 @@ router = APIRouter()
 
 
 @router.get("/relation")
-def get_realtion(id: str):
-    error, relation = Relation.get(id)
+def get_realtion(id: Optional[int] = None, name: Optional[str] = None):
+
+    if id is not None and name is not None:
+        return rcode("NotFound")
+
+    error, relation = Relation.get(id, name)
     if error:
         return rcode(error)
 
@@ -34,6 +39,30 @@ def post_realtion(
 ):
     error, _ = Relation.insert(name)
 
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.put("/relation")
+def update_relation(
+    id: int = Form(None),
+    name: str = Form(None),
+):
+    error, _ = Relation.update(id, name)
+
+    if error:
+        return rcode(error)
+
+    return rcode(error)
+
+
+@router.delete("/relation")
+def delete_relation(
+    id: int = Form(None),
+):
+    error, _ = Relation.delete(id)
     if error:
         return rcode(error)
 

@@ -17,6 +17,7 @@ class Member:
         id_job,
         id_home_town,
         id_old_member,
+        create_at,
     ):
         self.id = id
         self.name = name
@@ -28,6 +29,7 @@ class Member:
         self.id_job = id_job
         self.id_home_town = id_home_town
         self.id_old_member = id_old_member
+        self.create_at = create_at
 
     def json(self):
         return {
@@ -41,6 +43,7 @@ class Member:
             "id_job ": self.id_job,
             "id_home_town ": self.id_home_town,
             "id_old_member ": self.id_old_member,
+            "create_at": self.create_at,
         }
 
     @staticmethod
@@ -55,17 +58,83 @@ class Member:
             _json["MANGHENGHIEP"],
             _json["MAQUEQUAN"],
             _json["MATHANHVIENCU"],
+            _json["NGAYPHATSINH"],
         )
 
     @staticmethod
-    def get(id):
-        query = f"SELECT * FROM THANHVIEN WHERE MATHANHVIEN = {id}"
+    def get(
+        id,
+        name,
+        sex,
+        birthday,
+        address,
+        id_relation,
+        id_job,
+        id_home_town,
+        id_old_member,
+        create_at,
+    ):
+        query = f"SELECT * FROM THANHVIEN WHERE "
+        is_multi_condition = False
+        if id is not None:
+            is_multi_condition = True
+            query += f"MATHANHVIEN = {id}"
+
+        if name is not None:
+            if is_multi_condition:
+                query += " AND "
+            is_multi_condition = True
+            query += f"HOVATEN = '{name}'"
+
+        if sex is not None:
+            if is_multi_condition:
+                query += " AND "
+            is_multi_condition = True
+            query += f"GIOITINH = {sex}"
+
+        if birthday is not None:
+            if is_multi_condition:
+                query += " AND "
+            is_multi_condition = True
+            query += f"NGAYGIOSINH = '{birthday}'"
+
+        if address is not None:
+            if is_multi_condition:
+                query += " AND "
+            is_multi_condition = True
+            query += f"DIACHI = '{address}'"
+
+        if id_relation is not None:
+            if is_multi_condition:
+                query += " AND "
+            query += f"MALOAIQUANHE = {id_relation}"
+
+        if id_job is not None:
+            if is_multi_condition:
+                query += " AND "
+            query += f"MANGHENGHIEP = {id_job}"
+
+        if id_home_town is not None:
+            if is_multi_condition:
+                query += " AND "
+            query += f"MAQUEQUAN = {id_home_town}"
+
+        if id_old_member is not None:
+            if is_multi_condition:
+                query += " AND "
+            query += f" MATHANHVIENCU = {id_old_member}"
+
+        if create_at is not None:
+            if is_multi_condition:
+                query += " AND "
+            query += f"NGAYPHATSINH = '{create_at}'"
+
         logger.info(f"executing query: {query}")
         try:
-            _, member = exec_query(query, mode="fetchone")
-            if not member:
+            _, members = exec_query(query, mode="fetchall")
+            if not members:
                 return "NotFound", None
-            return None, Member.from_json(member)
+            return None, [Member.from_json(member) for member in members]
 
         except Exception as err:
             logger.error(f"can not execute query: {query}")
@@ -77,7 +146,7 @@ class Member:
         query = f"SELECT * FROM THANHVIEN"
         logger.info(f"executing query: {query}")
         try:
-            _, members = exec_query(query, mode='fetchall')
+            _, members = exec_query(query, mode="fetchall")
             if not members:
                 return "NotFound", None
             return None, [Member.from_json(member) for member in members]
@@ -88,12 +157,61 @@ class Member:
 
     @staticmethod
     def insert(
-        name, sex, birthday, address, id_relation, id_job, id_home_town, id_old_member
+        name,
+        sex,
+        birthday,
+        address,
+        id_relation,
+        id_job,
+        id_home_town,
+        id_old_member,
+        create_at,
     ):
-        query = f'INSERT INTO THANHVIEN (HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE)\
-                values ("{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}")'
+        query = f'INSERT INTO THANHVIEN (HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH)\
+                values ("{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}")'
 
         logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"can not execute query: {query}")
+            logger.error(err)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def update(
+        id,
+        name,
+        sex,
+        birthday,
+        address,
+        id_relation,
+        id_job,
+        id_home_town,
+        id_old_member,
+        create_at,
+    ):
+        query = f"update THANHVIEN set HOVATEN = '{name}', GIOITINH = {sex}, \
+            NGAYGIOSINH = '{birthday}', MAQUEQUAN = {id_home_town}, MANGHENGHIEP = {id_job},\
+            DIACHI = '{address}', MALOAIQUANHE = {id_relation}, MATHANHVIENCU = {id_old_member}\
+            NGAYPHATSINH = '{create_at}' where MATHANHVIEN = {id}"
+
+        logger.info(f"executing query: {query}")
+
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"can not execute query: {query}")
+            logger.error(err)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def delete(id):
+        query = f"delete from THANHVIEN where MATHANHVIEN = {id}"
+        logger.info(f"executing query: {query}")
+
         try:
             exec_query(query)
             return None, None

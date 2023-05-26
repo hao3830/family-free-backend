@@ -29,15 +29,20 @@ class Reason:
         )
     
     @staticmethod  
-    def get(id):
-        query = f"SELECT * FROM NGUYENNHAN WHERE MANGUYENNHAN = {id}"
+    def get(id, name):
+        query = f"SELECT * FROM NGUYENNHAN WHERE "
+        if id is not None:
+            query += f"MANGUYENNHAN = {id}"
+        
+        if name is not None:
+            if id is not None:
+                query += " AND "
+            query += f"TENNGUYENNHAN = '{name}'"
+
         logger.info(f"executing query: {query}")
         try:
-            _, reason = exec_query(query, mode="fetchone")
-            if not reason:
-                return "NotFound", None
-            return None, Reason.from_json(reason)
-
+            _, reasons = exec_query(query, mode="fetchall")
+            return None, [Reason.from_json(p) for p in reasons]
         except Exception as err:
             logger.error(f"can not execute query: {query}")
             logger.error(err)
@@ -58,6 +63,30 @@ class Reason:
     @staticmethod
     def insert(name):
         query = f'Insert into NGUYENNHAN (TENNGUYENNHAN) values ("{name}")'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+    
+    @staticmethod
+    def update(id,name):
+        query = f"update NGUYENNHAN set TENNGUYENNHAN = '{name}' where MANGUYENNHAN = {id}"
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+    
+    @staticmethod
+    def delete(id):
+        query = f"delete from NGUYENNHAN where MANGUYENNHAN = {id}"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

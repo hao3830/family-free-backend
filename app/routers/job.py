@@ -1,5 +1,6 @@
 from logging import getLogger
 from fastapi import APIRouter, Form
+from typing import Optional
 
 from src.models.job import Job
 from src.rcode import rcode
@@ -10,8 +11,11 @@ router = APIRouter()
 
 
 @router.get("/job")
-def get_job(id: str):
-    error, job = Job.get(id)
+def get_job(id: Optional[int] = None, name: Optional[str] = None):
+    if id is None and name is None:
+        return rcode("NotFound")
+
+    error, job = Job.get(id, name)
     if error:
         return rcode(error)
 
@@ -34,6 +38,30 @@ def post_job(
 ):
     error, _ = Job.insert(name)
 
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.put("/job")
+def put_job(
+    id: int = Form(None),
+    name: str = Form(None),
+):
+    error, _ = Job.update(id, name)
+
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.delete("/job")
+def delete_job(
+    id: int = Form(None),
+):
+    error, _ = Job.delete(id)
     if error:
         return rcode(error)
 

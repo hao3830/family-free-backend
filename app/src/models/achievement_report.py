@@ -30,14 +30,31 @@ class AchievementReport:
         )
 
     @staticmethod
-    def get(id):
-        query = f"SELECT * FROM BAOCAOTHANHTICH WHERE MABAOCAOTHANHTICH = {id}"
+    def get(id, year, id_achievement_type, achievement_count):
+        query = "SELECT * FROM BAOCAOTHANHTICH WHERE "
+
+        if id is not None:
+            query += f"MABAOCAOTHANHTICH = {id}"
+
+        if year is not None:
+            if id is not None:
+                query += " AND "
+            query += f"NAM = {year}"
+
+        if id_achievement_type is not None:
+            if id is not None or year is not None:
+                query += " AND "
+            query += f"MALOAITHANHTICH = {id_achievement_type}"
+
+        if achievement_count is not None:
+            if id is not None or year is not None or id_achievement_type is not None:
+                query += " AND "
+            query += f"SOLUONGTHANHTICH = {achievement_count}"
+
         logger.info(f"executing query: {query}")
         try:
-            _, achievemet_report = exec_query(query, mode="fetchone")
-            if not achievemet_report:
-                return "NotFound", None
-            return None, AchievementReport.from_json(achievemet_report)
+            _, achievement_reports = exec_query(query, mode="fetchall")
+            return None, [AchievementReport.from_json(p) for p in achievement_reports]
 
         except Exception as err:
             logger.error(f"can not execute query: {query}")
@@ -56,7 +73,7 @@ class AchievementReport:
             return "SQLExecuteError", None
 
     @staticmethod
-    def insert( year, id_achievement_type, achievement_count):
+    def insert(year, id_achievement_type, achievement_count):
         query = f"INSERT INTO BAOCAOTHANHTICH(NAM, MALOAITHANHTICH, SOLUONGTHANHTICH) VALUES ({year}, {id_achievement_type}, {achievement_count})"
         try:
             exec_query(query)
@@ -65,4 +82,25 @@ class AchievementReport:
             logger.error(f"Cannot execute query: {query}")
             logger.error(err, exc_info=True)
             return "SQLExecuteError", None
-        
+
+    @staticmethod
+    def update(id, year, id_achievement_type, achievement_count):
+        query = f"UPDATE BAOCAOTHANHTICH SET NAM = {year}, MALOAITHANHTICH = {id_achievement_type}, SOLUONGTHANHTICH = {achievement_count} WHERE MABAOCAOTHANHTICH = {id}"
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def delete(id):
+        query = f"DELETE FROM BAOCAOTHANHTICH WHERE MABAOCAOTHANHTICH = {id}"
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None

@@ -1,5 +1,6 @@
 from logging import getLogger
 from fastapi import APIRouter, Form
+from typing import Optional
 
 from src.models.achievement import Achievement
 from src.rcode import rcode
@@ -10,12 +11,31 @@ router = APIRouter()
 
 
 @router.get("/achievement")
-def get_achievement(id: str):
-    error, achievement = Achievement.get(id)
+def get_achievement(
+    id: Optional[int] = None,
+    name: Optional[str] = None,
+    id_achievement_type: Optional[int] = None,
+    date: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+):
+    if (
+        id is None
+        and name is None
+        and id_achievement_type is None
+        and date is None
+        and start_date is None
+        and end_date is None
+    ):
+        return rcode("NotFound")
+
+    error, achievement = Achievement.get(
+        id, name, id_achievement_type, date, start_date, end_date
+    )
     if error:
         return rcode(error)
 
-    return {**rcode(1000), "achievement": achievement}
+    return {**rcode(1000), "achievements": achievement}
 
 
 @router.get("/all_achievements")
@@ -35,6 +55,30 @@ def post_achievement(
     date: str = Form(None),
 ):
     error, _ = Achievement.insert(name, id_achievement_type, date)
+
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.put("/achievement")
+def update_achievement(
+    id: int = Form(None),
+    name: str = Form(None),
+    id_achievement_type: int = Form(None),
+    date: str = Form(None),
+):
+    error, _ = Achievement.update(id, name, id_achievement_type, date)
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.delete("/achievement")
+def delete_achievement(id: int = Form(None)):
+    error, _ = Achievement.delete(id)
 
     if error:
         return rcode(error)

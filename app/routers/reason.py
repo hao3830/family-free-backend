@@ -1,5 +1,6 @@
 from logging import getLogger
 from fastapi import APIRouter, Form
+from typing import Optional
 
 from src.models.reason import Reason
 from src.rcode import rcode
@@ -10,12 +11,15 @@ router = APIRouter()
 
 
 @router.get("/reason")
-def get_reason(id: str):
-    error, reason = Reason.get(id)
+def get_reason(id: Optional[int] = None, name: Optional[str] = None):
+    if id is None and name is None:
+        return rcode("NotFound")
+    
+    error, reason = Reason.get(id, name)
     if error:
         return rcode(error)
 
-    return {**rcode(1000), "reason": reason}
+    return {**rcode(1000), "reasons": reason}
 
 
 @router.get("/all_reasons")
@@ -37,4 +41,25 @@ def post_reason(
     if error:
         return rcode(error)
 
+    return rcode(1000)
+
+@router.put("/reason")
+def update_reason(
+    id: int = Form(None),
+    name: str = Form(None),
+):
+    error, _ = Reason.update(id, name)
+    if error:
+        return rcode(error)
+    
+    return rcode(1000)
+
+@router.delete("/reason")
+def delete_reason(
+    id: int = Form(None),
+):
+    error, _ = Reason.delete(id)
+    if error:
+        return rcode(error)
+    
     return rcode(1000)

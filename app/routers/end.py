@@ -1,5 +1,6 @@
 from logging import getLogger
 from fastapi import APIRouter, Form
+from typing import Optional
 
 from src.models.end import End
 from src.rcode import rcode
@@ -10,8 +11,23 @@ router = APIRouter()
 
 
 @router.get("/end")
-def get_end(id: str):
-    error, end = End.get(id)
+def get_end(
+    id: Optional[int] = None,
+    name: Optional[str] = None,
+    dead_date: Optional[str] = None,
+    id_reason: Optional[int] = None,
+    id_dead_location: Optional[int] = None,
+):
+    if (
+        id is None
+        and name is None
+        and dead_date is None
+        and id_reason is None
+        and id_dead_location is None
+    ):
+        return rcode("NotFound")
+
+    error, end = End.get(id, name, dead_date, id_reason, id_dead_location)
     if error:
         return rcode(error)
 
@@ -37,6 +53,32 @@ def post_end(
 ):
     error, _ = End.insert(name, dead_date, id_reason, id_dead_location)
 
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.put("/end")
+def update_end(
+    id: int = Form(None),
+    name: str = Form(None),
+    dead_date: str = Form(None),
+    id_reason: int = Form(None),
+    id_dead_location: int = Form(None),
+):
+    error, _ = End.update(id, name, dead_date, id_reason, id_dead_location)
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.delete("/end")
+def delete_end(
+    id: int = Form(None),
+):
+    error, _ = End.delete(id)
     if error:
         return rcode(error)
 

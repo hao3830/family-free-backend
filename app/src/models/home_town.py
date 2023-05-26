@@ -28,14 +28,20 @@ class HomeTown:
         )
 
     @staticmethod
-    def get(id):
-        query = f"SELECT * FROM QUEQUAN WHERE MAQUEQUAN = {id}"
+    def get(id, name):
+        query = f"SELECT * FROM QUEQUAN WHERE "
+        if id is not None:
+            query += f"MAQUEQUAN = {id} "
+
+        if name is not None:
+            if id is not None:
+                query += "AND "
+            query += f"TENQUANHE = '{name}' "
+
         logger.info(f"executing query: {query}")
         try:
-            _, home_town = exec_query(query, mode="fetchone")
-            if not home_town:
-                return "NotFound", None
-            return None, HomeTown.from_json(home_town)
+            _, home_towns = exec_query(query, mode="fetchall")
+            return None, [HomeTown.from_json(p) for p in home_towns]
 
         except Exception as err:
             logger.error(f"can not execute query: {query}")
@@ -56,6 +62,30 @@ class HomeTown:
     @staticmethod
     def insert(name):
         query = f'Insert into QUEQUAN (TENQUANHE) values ("{name}")'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def update(id, name):
+        query = f"update QUEQUAN set TENQUANHE = '{name}' where MAQUEQUAN = {id}"
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def delete(id):
+        query = f"delete from QUEQUAN where MAQUEQUAN = {id}"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

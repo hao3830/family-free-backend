@@ -21,14 +21,20 @@ class Job:
         return Job(id=_json["MANGHENGHIEP"], name=_json["TENNGHENGHIEP"])
 
     @staticmethod
-    def get(id):
-        query = f"SELECT * FROM NGHENGHIEP WHERE MANGHENGHIEP = {id}"
+    def get(id, name):
+        query = f"SELECT * FROM NGHENGHIEP WHERE "
+        if id is not None:
+            query += f"MANGHENGHIEP = {id}"
+
+        if name is not None:
+            if id is not None:
+                query += " AND "
+            query += f"TENNGHENGHIEP = '{name}'"
+
         logger.info(f"executing query: {query}")
         try:
-            _, job = exec_query(query, mode="fetchone")
-            if not job:
-                return "NotFound", None
-            return None, Job.from_json(job)
+            _, jobs = exec_query(query, mode="fetchall")
+            return None, [Job.from_json(p) for p in jobs]
 
         except Exception as err:
             logger.error(f"can not execute query: {query}")
@@ -58,3 +64,28 @@ class Job:
             logger.error(f"Cannot execute query: {query}")
             logger.error(err, exc_info=True)
             return "SQLExecuteError", None
+
+    @staticmethod
+    def update(id,name):
+        query = f"update NGHENGHIEP set TENNGHENGHIEP = '{name}' where MANGHENGHIEP = {id}"
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+    
+    @staticmethod
+    def delete(id):
+        query = f"delete from NGHENGHIEP where MANGHENGHIEP = {id}"
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None 
+        

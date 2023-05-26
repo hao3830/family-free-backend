@@ -1,5 +1,6 @@
 from logging import getLogger
 from fastapi import APIRouter, Form
+from typing import Optional
 
 from src.models.achievement_type import AchievementType
 from src.rcode import rcode
@@ -10,12 +11,15 @@ router = APIRouter()
 
 
 @router.get("/achievement_type")
-def get_achievement_type(id: str):
-    error, achievement_type = AchievementType.get(id)
+def get_achievement_type(id: Optional[int] = None, name: Optional[str] = None):
+    if id is None and name is None:
+        return rcode("NotFound")
+
+    error, achievement_type = AchievementType.get(id, name)
     if error:
         return rcode(error)
 
-    return {**rcode(1000), "achievement_type": achievement_type}
+    return {**rcode(1000), "achievement_types": achievement_type}
 
 
 @router.get("/all_achievement_types")
@@ -33,6 +37,30 @@ def post_achievement_type(
     name: str = Form(None),
 ):
     error, _ = AchievementType.insert(name)
+
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.put("/achievement_type")
+def update_achievement_type(
+    id: int = Form(None),
+    name: str = Form(None),
+):
+    error, _ = AchievementType.update(id, name)
+
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+@router.delete("/achievement_type")
+def delete_achievement_type(
+    id: int = Form(None),
+):
+    error, _ = AchievementType.delete(id)
 
     if error:
         return rcode(error)

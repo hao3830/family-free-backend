@@ -24,8 +24,17 @@ class Relation:
         )
 
     @staticmethod
-    def get(id):
-        query = f"SELECT * FROM QUANHE WHERE MAQUANHE = {id}"
+    def get(id, name):
+        query = f"SELECT * FROM QUANHE WHERE "
+
+        if id is not None:
+            query += f"MAQUANHE = {id} "
+        
+        if name is not None:
+            if id is not None:
+                query += "AND "
+            query += f"TENLOAIQUANHE = '{name}'"
+
         logger.info(f"executing query: {query}")
         try:
             _, realtion = exec_query(query, mode="fetchone")
@@ -52,6 +61,30 @@ class Relation:
     @staticmethod
     def insert(name):
         query = f'Insert into QUANHE (TENLOAIQUANHE) values ("{name}")'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def update(id, name):
+        query = f'Update QUANHE set TENLOAIQUANHE = "{name}" where MAQUANHE = {id}'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def delete(id):
+        query = f"Delete from QUANHE where MAQUANHE = {id}"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

@@ -22,14 +22,21 @@ class DeadLocation:
         )
     
     @staticmethod  
-    def get(id):
-        query = f"SELECT * FROM DIADIEMMAITANG WHERE MADIADIEMMAITANG = {id}"
+    def get(id, name):
+        query = f"SELECT * FROM DIADIEMMAITANG WHERE "
+        if id is not None:
+            query += f"MADIADIEMMAITANG = {id}"
+
+        if name is not None:
+            if id is not None:
+                query += " AND "
+            query += f"TENDIADIEMMAITANG = '{name}'"
+
         logger.info(f"executing query: {query}")
         try:
-            _, dead_location = exec_query(query, mode="fetchone")
-            if not dead_location:
-                return "NotFound", None
-            return None, DeadLocation.from_json(dead_location)
+            
+            _, dead_locations = exec_query(query, mode="fetchall")
+            return None, [DeadLocation.from_json(p) for p in dead_locations]
 
         except Exception as err:
             logger.error(f"can not execute query: {query}")
@@ -51,6 +58,30 @@ class DeadLocation:
     @staticmethod
     def insert(name):
         query = f'Insert into DIADIEMMAITANG (TENDIADIEMMAITANG) values ("{name}")'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+    
+    @staticmethod
+    def update(id, name):
+        query = f'Update DIADIEMMAITANG set TENDIADIEMMAITANG = "{name}" where MADIADIEMMAITANG = {id}'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+    
+    @staticmethod
+    def delete(id):
+        query = f"Delete from DIADIEMMAITANG where MADIADIEMMAITANG = {id}"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

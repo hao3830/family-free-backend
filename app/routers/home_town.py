@@ -1,5 +1,6 @@
 from logging import getLogger
 from fastapi import APIRouter, Form
+from typing import Optional
 
 from src.models.home_town import HomeTown
 from src.rcode import rcode
@@ -10,8 +11,11 @@ router = APIRouter()
 
 
 @router.get("/home_town")
-def get_home_town(id: str):
-    error, home_town = HomeTown.get(id)
+def get_home_town(id: Optional[int] = None, name: Optional[str] = None):
+    if id is None and name is None:
+        return rcode("NotFound")
+
+    error, home_town = HomeTown.get(id, name)
     if error:
         return rcode(error)
 
@@ -33,6 +37,28 @@ def post_home_town(
     name: str = Form(None),
 ):
     error, _ = HomeTown.insert(name)
+
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.put("/home_town")
+def update_home_town(
+    id: int = Form(None),
+    name: str = Form(None),
+):
+    error, _ = HomeTown.update(id, name)
+    if error:
+        return rcode(error)
+
+    return rcode(1000)
+
+
+@router.delete("/home_town")
+def delete_home_town(id: int = Form(None)):
+    error, _ = HomeTown.delete(id)
 
     if error:
         return rcode(error)

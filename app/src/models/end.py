@@ -33,15 +33,40 @@ class End:
         )
 
     @staticmethod
-    def get(id):
-        query = f"SELECT * FROM KETTHUC WHERE MAKETTHUC = {id}"
+    def get(id, name, dead_date, id_reason, id_dead_location):
+        query = f"SELECT * FROM KETTHUC WHERE "
+        if id is not None:
+            query += f"MAKETTHUC = {id}"
+
+        if name is not None:
+            if id is not None:
+                query += " AND "
+            query += f"HOVATEN = '{name}'"
+
+        if dead_date is not None:
+            if id is not None or name is not None:
+                query += " AND "
+            query += f"NGAYGIOMAT = '{dead_date}'"
+
+        if id_reason is not None:
+            if id is not None or name is not None or dead_date is not None:
+                query += " AND "
+            query += f"MANGUYENNHAN = {id_reason}"
+
+        if id_dead_location is not None:
+            if (
+                id is not None
+                or name is not None
+                or dead_date is not None
+                or id_reason is not None
+            ):
+                query += " AND "
+            query += f"MADIADIEMMAITANG = {id_dead_location}"
+
         logger.info(f"executing query: {query}")
         try:
-            _, end = exec_query(query, mode="fetchone")
-            if not end:
-                return "NotFound", None
-            return None, End.from_json(end)
-
+            _, ends = exec_query(query, mode="fetchall")
+            return None, [End.from_json(p) for p in ends]
         except Exception as err:
             logger.error(f"can not execute query: {query}")
             logger.error(err)
@@ -61,6 +86,30 @@ class End:
     @staticmethod
     def insert(name, dead_date, id_reason, id_dead_location):
         query = f'Insert into KETTHUC (HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG) values ("{name}", "{dead_date}", {id_reason}, {id_dead_location})'
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def update(id, name, dead_date, id_reason, id_dead_location):
+        query = f"update KETTHUC SET set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = {id_reason}, MADIADIEMMAITANG = {id_dead_location} where MAKETTHUC = {id}"
+        logger.info(f"executing query: {query}")
+        try:
+            exec_query(query)
+            return None, None
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def delete(id):
+        query = f"delete from KETTHUC where MAKETTHUC = {id}"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
