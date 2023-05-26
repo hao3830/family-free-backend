@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from src.utils.db_helper import exec_query
+from src.utils.helper import generate_random_string
 
 logger = getLogger("app")
 
@@ -167,8 +168,9 @@ class Member:
         id_old_member,
         create_at,
     ):
-        query = f'INSERT INTO THANHVIEN (HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH)\
-                values ("{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}")'
+        id = generate_random_string()
+        query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH)\
+                values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}")'
 
         logger.info(f"executing query: {query}")
         try:

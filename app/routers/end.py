@@ -12,11 +12,11 @@ router = APIRouter()
 
 @router.get("/end")
 def get_end(
-    id: Optional[int] = None,
+    id: Optional[str] = None,
     name: Optional[str] = None,
     dead_date: Optional[str] = None,
-    id_reason: Optional[int] = None,
-    id_dead_location: Optional[int] = None,
+    id_reason: Optional[str] = None,
+    id_dead_location: Optional[str] = None,
 ):
     if (
         id is None
@@ -61,11 +61,11 @@ def post_end(
 
 @router.put("/end")
 def update_end(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
     dead_date: str = Form(None),
-    id_reason: int = Form(None),
-    id_dead_location: int = Form(None),
+    id_reason: str = Form(None),
+    id_dead_location: str = Form(None),
 ):
     error, _ = End.update(id, name, dead_date, id_reason, id_dead_location)
     if error:
@@ -76,7 +76,7 @@ def update_end(
 
 @router.delete("/end")
 def delete_end(
-    id: int = Form(None),
+    id: str = Form(None),
 ):
     error, _ = End.delete(id)
     if error:

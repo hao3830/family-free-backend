@@ -12,9 +12,9 @@ router = APIRouter()
 
 @router.get("/achievement")
 def get_achievement(
-    id: Optional[int] = None,
+    id: Optional[str] = None,
     name: Optional[str] = None,
-    id_achievement_type: Optional[int] = None,
+    id_achievement_type: Optional[str] = None,
     date: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
@@ -51,7 +51,7 @@ def get_all_achievements():
 @router.post("/achievement")
 def post_achievement(
     name: str = Form(None),
-    id_achievement_type: int = Form(None),
+    id_achievement_type: str = Form(None),
     date: str = Form(None),
 ):
     error, _ = Achievement.insert(name, id_achievement_type, date)
@@ -64,9 +64,9 @@ def post_achievement(
 
 @router.put("/achievement")
 def update_achievement(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
-    id_achievement_type: int = Form(None),
+    id_achievement_type: str = Form(None),
     date: str = Form(None),
 ):
     error, _ = Achievement.update(id, name, id_achievement_type, date)

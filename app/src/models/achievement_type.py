@@ -8,6 +8,7 @@
 from logging import getLogger
 
 from src.utils.db_helper import exec_query
+from src.utils.helper import generate_random_string
 
 logger = getLogger("app")
 
@@ -61,7 +62,8 @@ class AchievementType:
     
     @staticmethod
     def insert(name):
-        query = f'Insert into LOAITHANHTICH (TENLOAITHANHTICH) values ("{name}")'
+        id = generate_random_string()
+        query = f'Insert into LOAITHANHTICH (MALOAITHANHTICH, TENLOAITHANHTICH) values ("{id}","{name}")'
         logger.info(f"executing query: {query}")
         
         try:

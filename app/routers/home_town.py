@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/home_town")
-def get_home_town(id: Optional[int] = None, name: Optional[str] = None):
+def get_home_town(id: Optional[str] = None, name: Optional[str] = None):
     if id is None and name is None:
         return rcode("NotFound")
 
@@ -46,7 +46,7 @@ def post_home_town(
 
 @router.put("/home_town")
 def update_home_town(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
 ):
     error, _ = HomeTown.update(id, name)
@@ -57,7 +57,7 @@ def update_home_town(
 
 
 @router.delete("/home_town")
-def delete_home_town(id: int = Form(None)):
+def delete_home_town(id: str = Form(None)):
     error, _ = HomeTown.delete(id)
 
     if error:

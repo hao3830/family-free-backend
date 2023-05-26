@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/achievement_type")
-def get_achievement_type(id: Optional[int] = None, name: Optional[str] = None):
+def get_achievement_type(id: Optional[str] = None, name: Optional[str] = None):
     if id is None and name is None:
         return rcode("NotFound")
 
@@ -46,7 +46,7 @@ def post_achievement_type(
 
 @router.put("/achievement_type")
 def update_achievement_type(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
 ):
     error, _ = AchievementType.update(id, name)
@@ -58,7 +58,7 @@ def update_achievement_type(
 
 @router.delete("/achievement_type")
 def delete_achievement_type(
-    id: int = Form(None),
+    id: str = Form(None),
 ):
     error, _ = AchievementType.delete(id)
 

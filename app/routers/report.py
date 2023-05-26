@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.get("/report")
 def get_report(
-    id: Optional[int] = None,
+    id: Optional[str] = None,
     nam: Optional[int] = None,
     soluongsinh: Optional[int] = None,
     soluonkethon: Optional[int] = None,
@@ -66,29 +66,32 @@ def post_report(
 
     return rcode(1000)
 
+
 @router.put("/report")
 def put_report(
-    id: int = Form(None),
+    id: str = Form(None),
     year: int = Form(None),
     number_of_births: int = Form(None),
     number_of_marriages: int = Form(None),
     number_of_deaths: int = Form(None),
 ):
     error, _ = Report.update(
-        id, year, number_of_births, number_of_marriages, number_of_deaths)
-    
+        id, year, number_of_births, number_of_marriages, number_of_deaths
+    )
+
     if error:
         return rcode(error)
-    
+
     return rcode(1000)
+
 
 @router.delete("/report")
 def delete_report(
-    id: int = Form(None),):
-
+    id: str = Form(None),
+):
     error, _ = Report.delete(id)
 
     if error:
         return rcode(error)
-    
+
     return rcode(1000)

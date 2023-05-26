@@ -12,15 +12,15 @@ router = APIRouter()
 
 @router.get("/member")
 def get_member(
-    id: Optional[int] = None,
+    id: Optional[str] = None,
     name: Optional[str] = None,
     sex: Optional[int] = None,
     birthday: Optional[str] = None,
     address: Optional[str] = None,
-    id_relation: Optional[int] = None,
-    id_job: Optional[int] = None,
-    id_home_town: Optional[int] = None,
-    id_old_member: Optional[int] = None,
+    id_relation: Optional[str] = None,
+    id_job: Optional[str] = None,
+    id_home_town: Optional[str] = None,
+    id_old_member: Optional[str] = None,
     create_at: Optional[str] = None,
 ):
     if (
@@ -71,10 +71,10 @@ def post_member(
     sex: int = Form(None),
     birthday: str = Form(None),
     address: str = Form(None),
-    id_relation: int = Form(None),
-    id_job: int = Form(None),
-    id_home_town: int = Form(None),
-    id_old_member: Optional[int] = Form(None),
+    id_relation: str = Form(None),
+    id_job: str = Form(None),
+    id_home_town: str = Form(None),
+    id_old_member: Optional[str] = Form(None),
     create_at: str = Form(None),
 ):
     error, _ = Member.insert(
@@ -101,10 +101,10 @@ def update_member(
     sex: int = Form(None),
     birthday: str = Form(None),
     address: str = Form(None),
-    id_relation: int = Form(None),
-    id_job: int = Form(None),
-    id_home_town: int = Form(None),
-    id_old_member: Optional[int] = Form(None),
+    id_relation: str = Form(None),
+    id_job: str = Form(None),
+    id_home_town: str = Form(None),
+    id_old_member: Optional[str] = Form(None),
     create_at: str = Form(None),
 ):
     error, _ = Member.update(        id,

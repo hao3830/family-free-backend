@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/job")
-def get_job(id: Optional[int] = None, name: Optional[str] = None):
+def get_job(id: Optional[str] = None, name: Optional[str] = None):
     if id is None and name is None:
         return rcode("NotFound")
 
@@ -46,7 +46,7 @@ def post_job(
 
 @router.put("/job")
 def put_job(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
 ):
     error, _ = Job.update(id, name)
@@ -59,7 +59,7 @@ def put_job(
 
 @router.delete("/job")
 def delete_job(
-    id: int = Form(None),
+    id: str = Form(None),
 ):
     error, _ = Job.delete(id)
     if error:

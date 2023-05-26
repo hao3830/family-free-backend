@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from src.utils.db_helper import exec_query
+from src.utils.helper import generate_random_string
 
 logger = getLogger("app")
 
@@ -55,7 +56,9 @@ class Job:
 
     @staticmethod
     def insert(name):
-        query = f'Insert into NGHENGHIEP (TENNGHENGHIEP) values ("{name}")'
+        id = generate_random_string()
+        
+        query = f'Insert into NGHENGHIEP (MANGHENGHIEP,TENNGHENGHIEP) values ("{id}","{name}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

@@ -14,7 +14,7 @@ router = APIRouter()
 def get_achievement_report(
     id: Optional[str] = None,
     year: Optional[int] = None,
-    id_achievement_type: Optional[int] = None,
+    id_achievement_type: Optional[str] = None,
     achievement_count: Optional[int] = None,
 ):
     if (
@@ -47,7 +47,7 @@ def get_all_achievement_reports():
 @router.post("/achievement_report")
 def post_achievement_report(
     year: int = Form(None),
-    id_achievement_type: int = Form(None),
+    id_achievement_type: str = Form(None),
     achievement_count: int = Form(None),
 ):
     error, _ = AchievementReport.insert(year, id_achievement_type, achievement_count)
@@ -61,7 +61,7 @@ def post_achievement_report(
 def put_achievement_report(
     id: str = Form(None),
     year: int = Form(None),
-    id_achievement_type: int = Form(None),
+    id_achievement_type: str = Form(None),
     achievement_count: int = Form(None),
 ):
     error, _ = AchievementReport.update(

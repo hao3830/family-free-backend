@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from src.utils.db_helper import exec_query
+from src.utils.helper import generate_random_string
 
 logger = getLogger("app")
 
@@ -85,7 +86,9 @@ class End:
 
     @staticmethod
     def insert(name, dead_date, id_reason, id_dead_location):
-        query = f'Insert into KETTHUC (HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG) values ("{name}", "{dead_date}", {id_reason}, {id_dead_location})'
+        id = generate_random_string()
+
+        query = f'Insert into KETTHUC (MAKETTHUC, HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG) values ("{id}","{name}", "{dead_date}", {id_reason}, {id_dead_location})'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

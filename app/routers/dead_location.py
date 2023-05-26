@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/dead_location")
-def get_dead_location(id: Optional[int], name: Optional[str]):
+def get_dead_location(id: Optional[str], name: Optional[str]):
     if id is None and name is None:
         return rcode("NotFound")
 
@@ -45,7 +45,7 @@ def post_dead_location(
 
 
 @router.put("/dead_location")
-def update_dead_location(id: int = Form(None), name: str = Form(None)):
+def update_dead_location(id: str = Form(None), name: str = Form(None)):
     error, _ = DeadLocation.update(id, name)
     if error:
         return rcode(error)
@@ -54,7 +54,7 @@ def update_dead_location(id: int = Form(None), name: str = Form(None)):
 
 
 @router.delete("/dead_location")
-def delete_dead_location(id: int = Form(None)):
+def delete_dead_location(id: str = Form(None)):
     error, _ = DeadLocation.delete(id)
     if error:
         return rcode(error)

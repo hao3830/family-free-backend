@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/relation")
-def get_realtion(id: Optional[int] = None, name: Optional[str] = None):
+def get_realtion(id: Optional[str] = None, name: Optional[str] = None):
 
     if id is not None and name is not None:
         return rcode("NotFound")
@@ -47,7 +47,7 @@ def post_realtion(
 
 @router.put("/relation")
 def update_relation(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
 ):
     error, _ = Relation.update(id, name)
@@ -60,7 +60,7 @@ def update_relation(
 
 @router.delete("/relation")
 def delete_relation(
-    id: int = Form(None),
+    id: str = Form(None),
 ):
     error, _ = Relation.delete(id)
     if error:

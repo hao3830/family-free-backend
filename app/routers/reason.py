@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/reason")
-def get_reason(id: Optional[int] = None, name: Optional[str] = None):
+def get_reason(id: Optional[str] = None, name: Optional[str] = None):
     if id is None and name is None:
         return rcode("NotFound")
     
@@ -45,7 +45,7 @@ def post_reason(
 
 @router.put("/reason")
 def update_reason(
-    id: int = Form(None),
+    id: str = Form(None),
     name: str = Form(None),
 ):
     error, _ = Reason.update(id, name)
@@ -56,7 +56,7 @@ def update_reason(
 
 @router.delete("/reason")
 def delete_reason(
-    id: int = Form(None),
+    id: str = Form(None),
 ):
     error, _ = Reason.delete(id)
     if error:
