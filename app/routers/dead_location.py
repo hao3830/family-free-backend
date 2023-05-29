@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.get("/dead_location")
-def get_dead_location(id: Optional[str], name: Optional[str]):
+def get_dead_location(id: Optional[str] = None, name: Optional[str] = None):
     if id is None and name is None:
         return rcode("NotFound")
 
