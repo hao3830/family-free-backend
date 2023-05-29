@@ -48,8 +48,8 @@ def get_all_ends():
 def post_end(
     name: str = Form(None),
     dead_date: str = Form(None),
-    id_reason: int = Form(None),
-    id_dead_location: int = Form(None),
+    id_reason: str = Form(None),
+    id_dead_location: str = Form(None),
 ):
     error, _ = End.insert(name, dead_date, id_reason, id_dead_location)
 
