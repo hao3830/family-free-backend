@@ -26,7 +26,7 @@ class DeadLocation:
     def get(id, name):
         query = f"SELECT * FROM DIADIEMMAITANG WHERE "
         if id is not None:
-            query += f"MADIADIEMMAITANG = {id}"
+            query += f"MADIADIEMMAITANG = '{id}'"
 
         if name is not None:
             if id is not None:
@@ -72,7 +72,7 @@ class DeadLocation:
     
     @staticmethod
     def update(id, name):
-        query = f'Update DIADIEMMAITANG set TENDIADIEMMAITANG = "{name}" where MADIADIEMMAITANG = {id}'
+        query = f'Update DIADIEMMAITANG set TENDIADIEMMAITANG = "{name}" where MADIADIEMMAITANG = "{id}"'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -84,7 +84,7 @@ class DeadLocation:
     
     @staticmethod
     def delete(id):
-        query = f"Delete from DIADIEMMAITANG where MADIADIEMMAITANG = {id}"
+        query = f"Delete from DIADIEMMAITANG where MADIADIEMMAITANG = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

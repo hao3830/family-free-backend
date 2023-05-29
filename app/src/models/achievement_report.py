@@ -35,7 +35,7 @@ class AchievementReport:
         query = "SELECT * FROM BAOCAOTHANHTICH WHERE "
 
         if id is not None:
-            query += f"MABAOCAOTHANHTICH = {id}"
+            query += f"MABAOCAOTHANHTICH = '{id}'"
 
         if year is not None:
             if id is not None:
@@ -45,7 +45,7 @@ class AchievementReport:
         if id_achievement_type is not None:
             if id is not None or year is not None:
                 query += " AND "
-            query += f"MALOAITHANHTICH = {id_achievement_type}"
+            query += f"MALOAITHANHTICH = '{id_achievement_type}'"
 
         if achievement_count is not None:
             if id is not None or year is not None or id_achievement_type is not None:
@@ -76,7 +76,7 @@ class AchievementReport:
     @staticmethod
     def insert(year, id_achievement_type, achievement_count):
         id = generate_random_string()
-        query = f"INSERT INTO BAOCAOTHANHTICH(MABAOCAOTHANHTICH, NAM, MALOAITHANHTICH, SOLUONGTHANHTICH) VALUES ({id},{year}, {id_achievement_type}, {achievement_count})"
+        query = f"INSERT INTO BAOCAOTHANHTICH(MABAOCAOTHANHTICH, NAM, MALOAITHANHTICH, SOLUONGTHANHTICH) VALUES ('{id}',{year}, '{id_achievement_type}', {achievement_count})"
         try:
             exec_query(query)
             return None, None
@@ -87,7 +87,7 @@ class AchievementReport:
 
     @staticmethod
     def update(id, year, id_achievement_type, achievement_count):
-        query = f"UPDATE BAOCAOTHANHTICH SET NAM = {year}, MALOAITHANHTICH = {id_achievement_type}, SOLUONGTHANHTICH = {achievement_count} WHERE MABAOCAOTHANHTICH = {id}"
+        query = f"UPDATE BAOCAOTHANHTICH SET NAM = {year}, MALOAITHANHTICH = '{id_achievement_type}', SOLUONGTHANHTICH = {achievement_count} WHERE MABAOCAOTHANHTICH = '{id}'"
         try:
             exec_query(query)
             return None, None
@@ -98,7 +98,7 @@ class AchievementReport:
 
     @staticmethod
     def delete(id):
-        query = f"DELETE FROM BAOCAOTHANHTICH WHERE MABAOCAOTHANHTICH = {id}"
+        query = f"DELETE FROM BAOCAOTHANHTICH WHERE MABAOCAOTHANHTICH = '{id}'"
         try:
             exec_query(query)
             return None, None

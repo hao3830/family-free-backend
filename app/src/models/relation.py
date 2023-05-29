@@ -29,7 +29,7 @@ class Relation:
         query = f"SELECT * FROM QUANHE WHERE "
 
         if id is not None:
-            query += f"MAQUANHE = {id} "
+            query += f"MAQUANHE = '{id}' "
         
         if name is not None:
             if id is not None:
@@ -73,7 +73,7 @@ class Relation:
 
     @staticmethod
     def update(id, name):
-        query = f'Update QUANHE set TENLOAIQUANHE = "{name}" where MAQUANHE = {id}'
+        query = f'Update QUANHE set TENLOAIQUANHE = "{name}" where MAQUANHE = "{id}"'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -85,7 +85,7 @@ class Relation:
 
     @staticmethod
     def delete(id):
-        query = f"Delete from QUANHE where MAQUANHE = {id}"
+        query = f"Delete from QUANHE where MAQUANHE = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

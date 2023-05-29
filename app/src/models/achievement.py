@@ -37,7 +37,7 @@ class Achievement:
 
         if id is not None:
             is_many_condition = True
-            query += f"MATHANHTICH = {id}"
+            query += f"MATHANHTICH = '{id}'"
 
         if name is not None:
             if is_many_condition:
@@ -49,7 +49,7 @@ class Achievement:
             if is_many_condition:
                 query += " AND "
             is_many_condition = True
-            query += f"MALOAITHANHTICH = {id_achievement_type}"
+            query += f"MALOAITHANHTICH = '{id_achievement_type}'"
 
         if date is not None:
             if is_many_condition:
@@ -95,7 +95,7 @@ class Achievement:
     def insert(name, id_achievement_type, date):
         id = generate_random_string()
         
-        query = f"INSERT INTO THANHTICH (MATHANHTICH, HOVATEN, MALOAITHANHTICH, NGAYPHATSINH) VALUES ('{id}','{name}', {id_achievement_type}, '{date}')"
+        query = f"INSERT INTO THANHTICH (MATHANHTICH, HOVATEN, MALOAITHANHTICH, NGAYPHATSINH) VALUES ('{id}','{name}', '{id_achievement_type}', '{date}')"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -107,7 +107,7 @@ class Achievement:
 
     @staticmethod
     def update(id, name, id_achievement_type, date):
-        query = f"UPDATE THANHTICH SET HOVATEN = '{name}', MALOAITHANHTICH = {id_achievement_type}, NGAYPHATSINH = '{date}' WHERE MATHANHTICH = {id} "
+        query = f"UPDATE THANHTICH SET HOVATEN = '{name}', MALOAITHANHTICH = '{id_achievement_type}', NGAYPHATSINH = '{date}' WHERE MATHANHTICH = '{id}' "
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -119,7 +119,7 @@ class Achievement:
     
     @staticmethod
     def delete(id):
-        query = f"DELETE FROM THANHTICH WHERE MATHANHTICH = {id}"
+        query = f"DELETE FROM THANHTICH WHERE MATHANHTICH = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

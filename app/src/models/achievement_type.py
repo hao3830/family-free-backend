@@ -31,7 +31,7 @@ class AchievementType:
     def get(id, name):
         query = "SELECT * FROM LOAITHANHTICH WHERE "
         if id is not None:
-            query += f"MALOAITHANHTICH = {id}"
+            query += f"MALOAITHANHTICH = '{id}'"
         
         if name is not None:
             if id is not None:
@@ -76,7 +76,7 @@ class AchievementType:
     
     @staticmethod
     def update(id, name):
-        query = f'Update LOAITHANHTICH set TENLOAITHANHTICH = "{name}" where MALOAITHANHTICH = {id}'
+        query = f'Update LOAITHANHTICH set TENLOAITHANHTICH = "{name}" where MALOAITHANHTICH = "{id}"'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -88,7 +88,7 @@ class AchievementType:
 
     @staticmethod
     def delete(id):
-        query = f'Delete from LOAITHANHTICH where MALOAITHANHTICH = {id}'
+        query = f'Delete from LOAITHANHTICH where MALOAITHANHTICH = "{id}"'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

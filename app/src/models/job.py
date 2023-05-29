@@ -25,7 +25,7 @@ class Job:
     def get(id, name):
         query = f"SELECT * FROM NGHENGHIEP WHERE "
         if id is not None:
-            query += f"MANGHENGHIEP = {id}"
+            query += f"MANGHENGHIEP = '{id}'"
 
         if name is not None:
             if id is not None:
@@ -70,7 +70,7 @@ class Job:
 
     @staticmethod
     def update(id,name):
-        query = f"update NGHENGHIEP set TENNGHENGHIEP = '{name}' where MANGHENGHIEP = {id}"
+        query = f"update NGHENGHIEP set TENNGHENGHIEP = '{name}' where MANGHENGHIEP = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -82,7 +82,7 @@ class Job:
     
     @staticmethod
     def delete(id):
-        query = f"delete from NGHENGHIEP where MANGHENGHIEP = {id}"
+        query = f"delete from NGHENGHIEP where MANGHENGHIEP = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

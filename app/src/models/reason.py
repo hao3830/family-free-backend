@@ -33,7 +33,7 @@ class Reason:
     def get(id, name):
         query = f"SELECT * FROM NGUYENNHAN WHERE "
         if id is not None:
-            query += f"MANGUYENNHAN = {id}"
+            query += f"MANGUYENNHAN = '{id}'"
         
         if name is not None:
             if id is not None:
@@ -76,7 +76,7 @@ class Reason:
     
     @staticmethod
     def update(id,name):
-        query = f"update NGUYENNHAN set TENNGUYENNHAN = '{name}' where MANGUYENNHAN = {id}"
+        query = f"update NGUYENNHAN set TENNGUYENNHAN = '{name}' where MANGUYENNHAN = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -88,7 +88,7 @@ class Reason:
     
     @staticmethod
     def delete(id):
-        query = f"delete from NGUYENNHAN where MANGUYENNHAN = {id}"
+        query = f"delete from NGUYENNHAN where MANGUYENNHAN = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

@@ -88,7 +88,7 @@ class End:
     def insert(name, dead_date, id_reason, id_dead_location):
         id = generate_random_string()
 
-        query = f'Insert into KETTHUC (MAKETTHUC, HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG) values ("{id}","{name}", "{dead_date}", {id_reason}, {id_dead_location})'
+        query = f'Insert into KETTHUC (MAKETTHUC, HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG) values ("{id}","{name}", "{dead_date}", "{id_reason}", "{id_dead_location}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -100,7 +100,7 @@ class End:
 
     @staticmethod
     def update(id, name, dead_date, id_reason, id_dead_location):
-        query = f"update KETTHUC SET set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = {id_reason}, MADIADIEMMAITANG = {id_dead_location} where MAKETTHUC = {id}"
+        query = f"update KETTHUC SET set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = '{id_reason}', MADIADIEMMAITANG  = '{id_dead_location}' where MAKETTHUC = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

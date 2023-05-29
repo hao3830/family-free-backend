@@ -79,7 +79,7 @@ class Member:
         is_multi_condition = False
         if id is not None:
             is_multi_condition = True
-            query += f"MATHANHVIEN = {id}"
+            query += f"MATHANHVIEN = '{id}'"
 
         if name is not None:
             if is_multi_condition:
@@ -108,22 +108,22 @@ class Member:
         if id_relation is not None:
             if is_multi_condition:
                 query += " AND "
-            query += f"MALOAIQUANHE = {id_relation}"
+            query += f"MALOAIQUANHE = '{id_relation}'"
 
         if id_job is not None:
             if is_multi_condition:
                 query += " AND "
-            query += f"MANGHENGHIEP = {id_job}"
+            query += f"MANGHENGHIEP = '{id_job}'"
 
         if id_home_town is not None:
             if is_multi_condition:
                 query += " AND "
-            query += f"MAQUEQUAN = {id_home_town}"
+            query += f"MAQUEQUAN = '{id_home_town}'"
 
         if id_old_member is not None:
             if is_multi_condition:
                 query += " AND "
-            query += f" MATHANHVIENCU = {id_old_member}"
+            query += f" MATHANHVIENCU = '{id_old_member}'"
 
         if create_at is not None:
             if is_multi_condition:
@@ -195,9 +195,9 @@ class Member:
         create_at,
     ):
         query = f"update THANHVIEN set HOVATEN = '{name}', GIOITINH = {sex}, \
-            NGAYGIOSINH = '{birthday}', MAQUEQUAN = {id_home_town}, MANGHENGHIEP = {id_job},\
-            DIACHI = '{address}', MALOAIQUANHE = {id_relation}, MATHANHVIENCU = {id_old_member}\
-            NGAYPHATSINH = '{create_at}' where MATHANHVIEN = {id}"
+            NGAYGIOSINH = '{birthday}', MAQUEQUAN = '{id_home_town}', MANGHENGHIEP = '{id_job}',\
+            DIACHI = '{address}', MALOAIQUANHE = '{id_relation}', MATHANHVIENCU = '{id_old_member}'\
+            NGAYPHATSINH = '{create_at}' where MATHANHVIEN = '{id}'"
 
         logger.info(f"executing query: {query}")
 
@@ -211,7 +211,7 @@ class Member:
 
     @staticmethod
     def delete(id):
-        query = f"delete from THANHVIEN where MATHANHVIEN = {id}"
+        query = f"delete from THANHVIEN where MATHANHVIEN = '{id}'"
         logger.info(f"executing query: {query}")
 
         try:

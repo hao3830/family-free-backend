@@ -38,7 +38,7 @@ class Report:
         query = f"SELECT * FROM BAOCAOTANGGIAM WHERE "
         is_multi_condition = False
         if id is not None:
-            query += f"MABAOCAOTANGGIAM = {id}"
+            query += f"MABAOCAOTANGGIAM = '{id}'"
             is_multi_condition = True
         
         if nam is not None:

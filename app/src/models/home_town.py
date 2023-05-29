@@ -32,7 +32,7 @@ class HomeTown:
     def get(id, name):
         query = f"SELECT * FROM QUEQUAN WHERE "
         if id is not None:
-            query += f"MAQUEQUAN = {id} "
+            query += f"MAQUEQUAN = '{id}' "
 
         if name is not None:
             if id is not None:
@@ -76,7 +76,7 @@ class HomeTown:
 
     @staticmethod
     def update(id, name):
-        query = f"update QUEQUAN set TENQUANHE = '{name}' where MAQUEQUAN = {id}"
+        query = f"update QUEQUAN set TENQUANHE = '{name}' where MAQUEQUAN = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -88,7 +88,7 @@ class HomeTown:
 
     @staticmethod
     def delete(id):
-        query = f"delete from QUEQUAN where MAQUEQUAN = {id}"
+        query = f"delete from QUEQUAN where MAQUEQUAN = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
