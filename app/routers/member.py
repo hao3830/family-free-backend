@@ -32,7 +32,7 @@ def get_member(
         and id_relation is None
         and id_job is None
         and id_home_town is None
-        and id_old_member
+        and id_old_member is None
         and create_at is None
     ):
         return rcode("NotFound")
