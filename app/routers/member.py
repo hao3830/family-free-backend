@@ -22,6 +22,7 @@ def get_member(
     id_home_town: Optional[str] = None,
     id_old_member: Optional[str] = None,
     create_at: Optional[str] = None,
+    generation: Optional[int] = None,
 ):
     if (
         id is None
@@ -34,6 +35,7 @@ def get_member(
         and id_home_town is None
         and id_old_member is None
         and create_at is None
+        and generation is None
     ):
         return rcode("NotFound")
 
@@ -48,6 +50,7 @@ def get_member(
         id_home_town,
         id_old_member,
         create_at,
+        generation
     )
     if error:
         return rcode(error)
