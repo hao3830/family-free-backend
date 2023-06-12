@@ -118,26 +118,31 @@ class Member:
         if id_job is not None:
             if is_multi_condition:
                 query += " AND "
+            is_multi_condition = True
             query += f"MANGHENGHIEP = '{id_job}'"
 
         if id_home_town is not None:
             if is_multi_condition:
                 query += " AND "
+            is_multi_condition = True
             query += f"MAQUEQUAN = '{id_home_town}'"
 
         if id_old_member is not None:
             if is_multi_condition:
                 query += " AND "
+            is_multi_condition = True
             query += f" MATHANHVIENCU = '{id_old_member}'"
 
         if create_at is not None:
             if is_multi_condition:
                 query += " AND "
+            is_multi_condition = True
             query += f"NGAYPHATSINH = '{create_at}'"
         
         if generation is not None:
             if is_multi_condition:
                 query += " AND "
+            is_multi_condition = True
             query += f"THEHE = {generation}"
 
         logger.info(f"executing query: {query}")
