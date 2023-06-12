@@ -77,7 +77,7 @@ def update_achievement(
 
 
 @router.delete("/achievement")
-def delete_achievement(id: int = Form(None)):
+def delete_achievement(id: str = Form(None)):
     error, _ = Achievement.delete(id)
 
     if error:

@@ -112,7 +112,7 @@ class End:
 
     @staticmethod
     def delete(id):
-        query = f"delete from KETTHUC where MAKETTHUC = {id}"
+        query = f"delete from KETTHUC where MAKETTHUC = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
