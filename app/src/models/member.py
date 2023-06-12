@@ -149,7 +149,7 @@ class Member:
         try:
             _, members = exec_query(query, mode="fetchall")
             if not members:
-                return None, []
+                return "NotFound", None
             return None, [Member.from_json(member) for member in members]
 
         except Exception as err:
