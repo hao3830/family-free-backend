@@ -100,7 +100,7 @@ class End:
 
     @staticmethod
     def update(id, name, dead_date, id_reason, id_dead_location):
-        query = f"update KETTHUC SET set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = '{id_reason}', MADIADIEMMAITANG  = '{id_dead_location}' where MAKETTHUC = '{id}'"
+        query = f"update KETTHUC set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = '{id_reason}', MADIADIEMMAITANG  = '{id_dead_location}' where MAKETTHUC = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
