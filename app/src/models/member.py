@@ -236,7 +236,7 @@ class Member:
 
         query = f"update THANHVIEN set HOVATEN = '{name}', GIOITINH = {sex}, \
             NGAYGIOSINH = '{birthday}', MAQUEQUAN = '{id_home_town}', MANGHENGHIEP = '{id_job}',\
-            DIACHI = '{address}', MALOAIQUANHE = '{id_relation}', MATHANHVIENCU = '{id_old_member}'\
+            DIACHI = '{address}', MALOAIQUANHE = '{id_relation}', MATHANHVIENCU = '{id_old_member}',\
             NGAYPHATSINH = '{create_at}', THEHE = {genration} where MATHANHVIEN = '{id}'"
 
         logger.info(f"executing query: {query}")
