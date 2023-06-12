@@ -222,7 +222,7 @@ class Member:
         id_old_member,
         create_at,
     ):
-        if id_old_member is not None:
+        if id_old_member is None:
             genration = 0
         else:
             error, old_members = Member.get(id=id_old_member)
