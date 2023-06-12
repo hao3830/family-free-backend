@@ -19,6 +19,7 @@ class Member:
         id_home_town,
         id_old_member,
         create_at,
+        generation
     ):
         self.id = id
         self.name = name
@@ -31,6 +32,7 @@ class Member:
         self.id_home_town = id_home_town
         self.id_old_member = id_old_member
         self.create_at = create_at
+        self.generation = generation
 
     def json(self):
         return {
@@ -45,6 +47,7 @@ class Member:
             "id_home_town ": self.id_home_town,
             "id_old_member ": self.id_old_member,
             "create_at": self.create_at,
+            "generation" : self.generation,
         }
 
     @staticmethod
@@ -60,6 +63,7 @@ class Member:
             _json["MAQUEQUAN"],
             _json["MATHANHVIENCU"],
             _json["NGAYPHATSINH"],
+            _json["THEHE"],
         )
 
     @staticmethod
@@ -74,6 +78,7 @@ class Member:
         id_home_town,
         id_old_member,
         create_at,
+        generation,
     ):
         query = f"SELECT * FROM THANHVIEN WHERE "
         is_multi_condition = False
@@ -129,6 +134,11 @@ class Member:
             if is_multi_condition:
                 query += " AND "
             query += f"NGAYPHATSINH = '{create_at}'"
+        
+        if generation is not None:
+            if is_multi_condition:
+                query += " AND "
+            query += f"THEHE = {generation}"
 
         logger.info(f"executing query: {query}")
         try:
@@ -169,8 +179,21 @@ class Member:
         create_at,
     ):
         id = generate_random_string()
-        query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH)\
-                values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}")'
+
+        if id_old_member is not None:
+            genration = 0
+        else:
+            error, old_members = Member.get(id=id_old_member)
+            if error is not None:
+                return error, None
+
+            genration = old_members[0].generation
+        
+        if id_relation == '01':
+            genration += 1
+
+        query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
+                values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}","{genration}")'
 
         logger.info(f"executing query: {query}")
         try:
@@ -194,10 +217,22 @@ class Member:
         id_old_member,
         create_at,
     ):
+        if id_old_member is not None:
+            genration = 0
+        else:
+            error, old_members = Member.get(id=id_old_member)
+            if error is not None:
+                return error, None
+
+            genration = old_members[0].generation
+        
+        if id_relation == '01':
+            genration += 1
+
         query = f"update THANHVIEN set HOVATEN = '{name}', GIOITINH = {sex}, \
             NGAYGIOSINH = '{birthday}', MAQUEQUAN = '{id_home_town}', MANGHENGHIEP = '{id_job}',\
             DIACHI = '{address}', MALOAIQUANHE = '{id_relation}', MATHANHVIENCU = '{id_old_member}'\
-            NGAYPHATSINH = '{create_at}' where MATHANHVIEN = '{id}'"
+            NGAYPHATSINH = '{create_at}', THEHE = {genration} where MATHANHVIEN = '{id}'"
 
         logger.info(f"executing query: {query}")
 
