@@ -68,17 +68,17 @@ class Member:
 
     @staticmethod
     def get(
-        id,
-        name,
-        sex,
-        birthday,
-        address,
-        id_relation,
-        id_job,
-        id_home_town,
-        id_old_member,
-        create_at,
-        generation,
+        id = None,
+        name = None,
+        sex = None,
+        birthday = None,
+        address = None,
+        id_relation = None,
+        id_job = None,
+        id_home_town = None,
+        id_old_member = None,
+        create_at = None,
+        generation = None,
     ):
         query = f"SELECT * FROM THANHVIEN WHERE "
         is_multi_condition = False
