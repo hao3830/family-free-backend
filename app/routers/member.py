@@ -58,6 +58,15 @@ def get_member(
     return {**rcode(1000), "members": member}
 
 
+@router.get('/increase_and_decrease_members')
+def get_increase_and_decrease_members(start_year: int, end_year:int):
+    error, rows = Member.increase_and_decrease_member(start_year,end_year)
+    
+    if error:
+        return rcode(error)
+    
+    return {**rcode(1000), "result": rows}
+
 @router.get("/all_members")
 def get_all_members():
     error, members = Member.get_all()

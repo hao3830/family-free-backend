@@ -80,6 +80,24 @@ class Achievement:
             return "SQLExecuteError", None
 
     @staticmethod
+    def get_achievement_members_report(start_year, end_year):
+        query = f'''
+                SELECT LOAITHANHTICH.TENLOAITHANHTICH, COUNT(*) AS COUNT_OCCURRENCES
+                FROM THANHTICH
+                JOIN LOAITHANHTICH ON THANHTICH.MALOAITHANHTICH = LOAITHANHTICH.MALOAITHANHTICH
+                WHERE YEAR(NGAYPHATSINH) BETWEEN {start_year} AND {end_year}
+                GROUP BY LOAITHANHTICH.TENLOAITHANHTICH;
+                '''
+        logger.info(f"executing query: {query}")
+        try:
+            _, reponse = exec_query(query, mode="fetchall")
+            return None, reponse
+        except Exception as err:
+            logger.error(f"Cannot execute query: {query}")
+            logger.error(err, exc_info=True)
+            return "SQLExecuteError", None
+
+    @staticmethod
     def get_all():
         query = f"SELECT * FROM THANHTICH"
         logger.info(f"executing query: {query}")

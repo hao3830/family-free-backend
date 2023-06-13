@@ -19,7 +19,7 @@ class Member:
         id_home_town,
         id_old_member,
         create_at,
-        generation
+        generation,
     ):
         self.id = id
         self.name = name
@@ -47,7 +47,7 @@ class Member:
             "id_home_town ": self.id_home_town,
             "id_old_member ": self.id_old_member,
             "create_at": self.create_at,
-            "generation" : self.generation,
+            "generation": self.generation,
         }
 
     @staticmethod
@@ -68,17 +68,17 @@ class Member:
 
     @staticmethod
     def get(
-        id = None,
-        name = None,
-        sex = None,
-        birthday = None,
-        address = None,
-        id_relation = None,
-        id_job = None,
-        id_home_town = None,
-        id_old_member = None,
-        create_at = None,
-        generation = None,
+        id=None,
+        name=None,
+        sex=None,
+        birthday=None,
+        address=None,
+        id_relation=None,
+        id_job=None,
+        id_home_town=None,
+        id_old_member=None,
+        create_at=None,
+        generation=None,
     ):
         query = f"SELECT * FROM THANHVIEN WHERE "
         is_multi_condition = False
@@ -138,7 +138,7 @@ class Member:
                 query += " AND "
             is_multi_condition = True
             query += f"NGAYPHATSINH = '{create_at}'"
-        
+
         if generation is not None:
             if is_multi_condition:
                 query += " AND "
@@ -193,8 +193,8 @@ class Member:
                 return error, None
 
             genration = old_members[0].generation
-        
-        if id_relation == '01':
+
+        if id_relation == "01":
             genration += 1
 
         query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
@@ -230,8 +230,8 @@ class Member:
                 return error, None
 
             genration = old_members[0].generation
-        
-        if id_relation == '01':
+
+        if id_relation == "01":
             genration += 1
 
         query = f"update THANHVIEN set HOVATEN = '{name}', GIOITINH = {sex}, \
@@ -257,6 +257,37 @@ class Member:
         try:
             exec_query(query)
             return None, None
+        except Exception as err:
+            logger.error(f"can not execute query: {query}")
+            logger.error(err)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def increase_and_decrease_member(start_year, end_year):
+        query = f"""
+                    SELECT
+                YEAR(TH.NGAYPHATSINH) AS Year,
+                COUNT(DISTINCT CASE WHEN Q.TENLOAIQUANHE = 'Con' THEN TH.MATHANHVIEN END) AS Births,
+                COUNT(DISTINCT CASE WHEN Q.TENLOAIQUANHE = 'Vợ / Chồng' THEN TH.MATHANHVIEN END) AS Marriages,
+                COUNT(K.MAKETTHUC) AS Deaths
+            FROM
+                THANHVIEN TH
+            LEFT JOIN
+                QUANHE Q ON TH.MALOAIQUANHE = Q.MALOAIQUANHE
+            LEFT JOIN
+                KETTHUC K ON TH.MATHANHVIEN = K.HOVATEN AND YEAR(K.NGAYGIOMAT) BETWEEN {start_year} AND {end_year}
+            WHERE
+                YEAR(TH.NGAYPHATSINH) BETWEEN {start_year} AND {end_year}
+            GROUP BY
+                YEAR(TH.NGAYPHATSINH)
+            ORDER BY
+                YEAR(TH.NGAYPHATSINH);
+                    """
+        try:
+            _, rows = exec_query(query, mode="fetchall")
+            if not rows:
+                return "NotFound", None
+            return None, rows
         except Exception as err:
             logger.error(f"can not execute query: {query}")
             logger.error(err)

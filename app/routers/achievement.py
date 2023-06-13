@@ -37,6 +37,17 @@ def get_achievement(
 
     return {**rcode(1000), "achievements": achievement}
 
+@router.get("/achievement_members_report")
+def get_achievement_members_report(start_year: Optional[int] = None, end_year: Optional[int] = None):
+
+    if (start_year is None or end_year is None):
+        return rcode("NotFound")
+
+    error, achievement_members_report = Achievement.get_achievement_members_report(start_year,end_year)
+    if error:
+        return rcode(error)
+    
+    return {**rcode(1000), "result": achievement_members_report} 
 
 @router.get("/all_achievements")
 def get_all_achievements():
