@@ -7,11 +7,12 @@ logger = getLogger("app")
 
 
 class Achievement:
-    def __init__(self, id, name, id_achievement_type, date):
+    def __init__(self, id, name, id_achievement_type, date,id_member):
         self.id = id
         self.name = name
         self.id_achievement_type = id_achievement_type
         self.date = date
+        self.id_member = id_member
 
     def json(self):
         return {
@@ -19,6 +20,7 @@ class Achievement:
             "name": self.name,
             "id_achievement_type": self.id_achievement_type,
             "date": self.date,
+            "id_member": slef.id_member
         }
 
     @staticmethod
@@ -28,10 +30,11 @@ class Achievement:
             _json["HOVATEN"],
             _json["MALOAITHANHTICH"],
             _json["NGAYPHATSINH"],
+            _json["MATHANHVIEN"],
         )
 
     @staticmethod
-    def get(id, name, id_achievement_type, date, start_date, end_date):
+    def get(id, name, id_achievement_type, date, start_date, end_date, id_member):
         query = "SELECT * FROM THANHTICH WHERE "
         is_many_condition = False
 
@@ -68,6 +71,12 @@ class Achievement:
                 query += " AND "
             is_many_condition = True
             query += f"NGAYPHATSINH <= '{end_date}'"
+        
+        if id_member is not None:
+            if is_many_condition:
+                query += " AND "
+            is_many_condition = True
+            query += f"MATHANHVIEN = {id_member}"
 
         logger.info(f"executing query: {query}")
         try:
@@ -110,10 +119,10 @@ class Achievement:
             return "SQLExecuteError", None
 
     @staticmethod
-    def insert(name, id_achievement_type, date):
+    def insert(name, id_achievement_type, date, id_member):
         id = generate_random_string()
         
-        query = f"INSERT INTO THANHTICH (MATHANHTICH, HOVATEN, MALOAITHANHTICH, NGAYPHATSINH) VALUES ('{id}','{name}', '{id_achievement_type}', '{date}')"
+        query = f"INSERT INTO THANHTICH (MATHANHTICH, HOVATEN, MALOAITHANHTICH, NGAYPHATSINH,MATHANHVIEN) VALUES ('{id}','{name}', '{id_achievement_type}', '{date}','{id_member}')"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -124,8 +133,8 @@ class Achievement:
             return "SQLExecuteError", None
 
     @staticmethod
-    def update(id, name, id_achievement_type, date):
-        query = f"UPDATE THANHTICH SET HOVATEN = '{name}', MALOAITHANHTICH = '{id_achievement_type}', NGAYPHATSINH = '{date}' WHERE MATHANHTICH = '{id}' "
+    def update(id, name, id_achievement_type, date, id_member):
+        query = f"UPDATE THANHTICH SET HOVATEN = '{name}', MALOAITHANHTICH = '{id_achievement_type}', NGAYPHATSINH = '{date}', MATHANHVIEN='{id_member}' WHERE MATHANHTICH = '{id}' "
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

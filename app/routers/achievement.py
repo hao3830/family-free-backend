@@ -18,6 +18,7 @@ def get_achievement(
     date: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
+    id_member: Optional[str] = None
 ):
     if (
         id is None
@@ -26,11 +27,12 @@ def get_achievement(
         and date is None
         and start_date is None
         and end_date is None
+        and id_member is None
     ):
         return rcode("NotFound")
 
     error, achievement = Achievement.get(
-        id, name, id_achievement_type, date, start_date, end_date
+        id, name, id_achievement_type, date, start_date, end_date, id_member
     )
     if error:
         return rcode(error)
@@ -64,6 +66,7 @@ def post_achievement(
     name: str = Form(None),
     id_achievement_type: str = Form(None),
     date: str = Form(None),
+    id_member: str = Form(None),
 ):
     error, _ = Achievement.insert(name, id_achievement_type, date)
 
@@ -79,8 +82,9 @@ def update_achievement(
     name: str = Form(None),
     id_achievement_type: str = Form(None),
     date: str = Form(None),
+    id_member: str = Form(None), 
 ):
-    error, _ = Achievement.update(id, name, id_achievement_type, date)
+    error, _ = Achievement.update(id, name, id_achievement_type, date,id_member)
     if error:
         return rcode(error)
 

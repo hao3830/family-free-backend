@@ -17,6 +17,7 @@ def get_end(
     dead_date: Optional[str] = None,
     id_reason: Optional[str] = None,
     id_dead_location: Optional[str] = None,
+    id_member: Optional[str] = None,
 ):
     if (
         id is None
@@ -24,10 +25,11 @@ def get_end(
         and dead_date is None
         and id_reason is None
         and id_dead_location is None
+        and id_member is None
     ):
         return rcode("NotFound")
 
-    error, end = End.get(id, name, dead_date, id_reason, id_dead_location)
+    error, end = End.get(id, name, dead_date, id_reason, id_dead_location, id_member)
     if error:
         return rcode(error)
 
@@ -50,8 +52,9 @@ def post_end(
     dead_date: str = Form(None),
     id_reason: str = Form(None),
     id_dead_location: str = Form(None),
+    id_member: str = Form(None)
 ):
-    error, _ = End.insert(name, dead_date, id_reason, id_dead_location)
+    error, _ = End.insert(name, dead_date, id_reason, id_dead_location, id_member)
 
     if error:
         return rcode(error)
@@ -66,8 +69,9 @@ def update_end(
     dead_date: str = Form(None),
     id_reason: str = Form(None),
     id_dead_location: str = Form(None),
+    id_member: str = Form(None)
 ):
-    error, _ = End.update(id, name, dead_date, id_reason, id_dead_location)
+    error, _ = End.update(id, name, dead_date, id_reason, id_dead_location, id_member)
     if error:
         return rcode(error)
 

@@ -7,12 +7,13 @@ logger = getLogger("app")
 
 
 class End:
-    def __init__(self, id, name, dead_date, id_reason, id_dead_location):
+    def __init__(self, id, name, dead_date, id_reason, id_dead_location, id_member):
         self.id = id
         self.name = name
         self.dead_date = dead_date
         self.id_reason = id_reason
         self.id_dead_location = id_dead_location
+        self.id_member = id_member 
 
     def json(self):
         return {
@@ -21,6 +22,7 @@ class End:
             "dead_date": self.dead_date,
             "id_reason": self.id_reason,
             "id_dead_location": self.id_dead_location,
+            "id_member": self.id_member,
         }
 
     @staticmethod
@@ -31,10 +33,11 @@ class End:
             _json["NGAYGIOMAT"],
             _json["MANGUYENNHAN"],
             _json["MADIADIEMMAITANG"],
+            _json["MATHANHVIEN"],
         )
 
     @staticmethod
-    def get(id, name, dead_date, id_reason, id_dead_location):
+    def get(id, name, dead_date, id_reason, id_dead_location, id_member):
         query = f"SELECT * FROM KETTHUC WHERE "
         if id is not None:
             query += f"MAKETTHUC = {id}"
@@ -53,6 +56,12 @@ class End:
             if id is not None or name is not None or dead_date is not None:
                 query += " AND "
             query += f"MANGUYENNHAN = {id_reason}"
+        
+        if id_member is not None:
+            if id is not None or name is not None or dead_date is not None or id_reason is not None:
+                query += " AND "
+            query += f"MATHANHVIEN = {id_member}"
+
 
         if id_dead_location is not None:
             if (
@@ -85,10 +94,10 @@ class End:
             return "SQLExecuteError", None
 
     @staticmethod
-    def insert(name, dead_date, id_reason, id_dead_location):
+    def insert(name, dead_date, id_reason, id_dead_location, id_member):
         id = generate_random_string()
 
-        query = f'Insert into KETTHUC (MAKETTHUC, HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG) values ("{id}","{name}", "{dead_date}", "{id_reason}", "{id_dead_location}")'
+        query = f'Insert into KETTHUC (MAKETTHUC, HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG, MATHANHVIEN) values ("{id}","{name}", "{dead_date}", "{id_reason}", "{id_dead_location}","{id_member}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)
@@ -99,8 +108,8 @@ class End:
             return "SQLExecuteError", None
 
     @staticmethod
-    def update(id, name, dead_date, id_reason, id_dead_location):
-        query = f"update KETTHUC set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = '{id_reason}', MADIADIEMMAITANG  = '{id_dead_location}' where MAKETTHUC = '{id}'"
+    def update(id, name, dead_date, id_reason, id_dead_location, id_member):
+        query = f"update KETTHUC set HOVATEN = '{name}', NGAYGIOMAT = '{dead_date}', MANGUYENNHAN = '{id_reason}', MADIADIEMMAITANG  = '{id_dead_location}', MATHANHVIEN = '{id_member}' where MAKETTHUC = '{id}'"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

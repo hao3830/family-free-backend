@@ -194,8 +194,8 @@ class Member:
 
             genration = old_members[0].generation
 
-        if id_relation == "01":
-            genration += 1
+            if id_relation == "01":
+                genration += 1
 
         query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
                 values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}","{genration}")'
