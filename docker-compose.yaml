@@ -1,7 +1,7 @@
 services:
 
-  se:
-    container_name: se
+  haov_se:
+    container_name: haov_se
     build: .
     restart: always
     environment:
@@ -13,10 +13,10 @@ services:
     networks:
       - se_network
     depends_on:
-      - se_mysql
+      - haov_se_mysql
 
-  se_mysql:
-    container_name: se_mysql
+  haov_se_mysql:
+    container_name: haov_se_mysql
     image: mysql:8.0.29
     restart: always
     environment:
