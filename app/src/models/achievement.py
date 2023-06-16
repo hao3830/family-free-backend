@@ -76,7 +76,7 @@ class Achievement:
             if is_many_condition:
                 query += " AND "
             is_many_condition = True
-            query += f"MATHANHVIEN = {id_member}"
+            query += f"MATHANHVIEN = '{id_member}'"
 
         logger.info(f"executing query: {query}")
         try:

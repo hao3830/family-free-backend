@@ -60,7 +60,7 @@ class End:
         if id_member is not None:
             if id is not None or name is not None or dead_date is not None or id_reason is not None:
                 query += " AND "
-            query += f"MATHANHVIEN = {id_member}"
+            query += f"MATHANHVIEN = '{id_member}'"
 
 
         if id_dead_location is not None:

@@ -68,7 +68,7 @@ def post_achievement(
     date: str = Form(None),
     id_member: str = Form(None),
 ):
-    error, _ = Achievement.insert(name, id_achievement_type, date)
+    error, _ = Achievement.insert(name, id_achievement_type, date, id_member)
 
     if error:
         return rcode(error)
