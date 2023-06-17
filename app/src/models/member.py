@@ -196,9 +196,12 @@ class Member:
 
             if id_relation == "01":
                 genration += 1
-
-        query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
-                values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}","{genration}")'
+        if id_old_member is not None and id_relation is not None:
+            query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
+                    values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}","{genration}")'
+        else:
+             query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, NGAYPHATSINH, THEHE)\
+                    values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{create_at}","{genration}")'
 
         logger.info(f"executing query: {query}")
         try:
@@ -266,7 +269,7 @@ class Member:
     def increase_and_decrease_member(start_year, end_year):
         query = f"""
                     SELECT
-                YEAR(TH.NGAYPHATSINH) AS Year,
+                YEAR(TH.NGAYGIOSINH) AS Year,
                 COUNT(DISTINCT CASE WHEN Q.TENLOAIQUANHE = 'Con' THEN TH.MATHANHVIEN END) AS Births,
                 COUNT(DISTINCT CASE WHEN Q.TENLOAIQUANHE = 'Vợ / Chồng' THEN TH.MATHANHVIEN END) AS Marriages,
                 COUNT(K.MAKETTHUC) AS Deaths
@@ -275,14 +278,15 @@ class Member:
             LEFT JOIN
                 QUANHE Q ON TH.MALOAIQUANHE = Q.MALOAIQUANHE
             LEFT JOIN
-                KETTHUC K ON TH.MATHANHVIEN = K.HOVATEN AND YEAR(K.NGAYGIOMAT) BETWEEN {start_year} AND {end_year}
+                KETTHUC K ON TH.MATHANHVIEN = K.MATHANHVIEN
             WHERE
-                YEAR(TH.NGAYPHATSINH) BETWEEN {start_year} AND {end_year}
+                YEAR(TH.NGAYGIOSINH) BETWEEN {start_year} AND {end_year}
             GROUP BY
-                YEAR(TH.NGAYPHATSINH)
+                YEAR(TH.NGAYGIOSINH)
             ORDER BY
-                YEAR(TH.NGAYPHATSINH);
+                YEAR(TH.NGAYGIOSINH);
                     """
+        logger.info(query)
         try:
             _, rows = exec_query(query, mode="fetchall")
             if not rows:

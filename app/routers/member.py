@@ -1,9 +1,14 @@
+import io
+import pandas as pd
+
 from logging import getLogger
 from typing import Optional
 from fastapi import APIRouter, Form
+from fastapi.responses import StreamingResponse
 
 from src.models.member import Member
 from src.rcode import rcode
+
 
 logger = getLogger("app")
 
@@ -67,6 +72,31 @@ def get_increase_and_decrease_members(start_year: int, end_year:int):
     
     return {**rcode(1000), "result": rows}
 
+@router.get('/increase_and_decrease_members_csv')
+def get_csv(start_year: int, end_year:int):
+    error, rows = Member.increase_and_decrease_member(start_year,end_year)
+    if error:
+        return rcode(error)
+    stream = io.StringIO()
+
+    result = {"NO.": [],"Year": [], "Births": [], "Marriages": [], "Deaths": []}
+    for idx, row in enumerate(rows):
+        result["NO."] = idx
+        result['Year'].append(row['Year'])
+        result['Births'].append(row['Births'])
+        result['Marriages'].append(row['Marriages'])
+        result['Deaths'].append(row['Deaths'])
+    stream = io.StringIO()
+    df = pd.DataFrame(data=result)
+    df.to_csv(stream, index = False)
+    response = StreamingResponse(iter([stream.getvalue()]),
+                                 media_type="text/csv"
+                                )
+    response.headers["Content-Disposition"] = "attachment; filename=report.csv"
+    return response
+
+
+
 @router.get("/all_members")
 def get_all_members():
     error, members = Member.get_all()
@@ -83,7 +113,7 @@ def post_member(
     sex: int = Form(None),
     birthday: str = Form(None),
     address: str = Form(None),
-    id_relation: str = Form(None),
+    id_relation: Optional[str] = Form(None),
     id_job: str = Form(None),
     id_home_town: str = Form(None),
     id_old_member: Optional[str] = Form(None),

@@ -55,7 +55,7 @@ def update_relation(
     if error:
         return rcode(error)
 
-    return rcode(error)
+    return rcode(1000)
 
 
 @router.delete("/relation")

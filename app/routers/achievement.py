@@ -1,9 +1,13 @@
+import io
+
 from logging import getLogger
 from fastapi import APIRouter, Form
 from typing import Optional
+from fastapi.responses import StreamingResponse
 
 from src.models.achievement import Achievement
 from src.rcode import rcode
+
 
 logger = getLogger("app")
 
@@ -50,6 +54,35 @@ def get_achievement_members_report(start_year: Optional[int] = None, end_year: O
         return rcode(error)
     
     return {**rcode(1000), "result": achievement_members_report} 
+
+@router.get("/achievement_members_report_csv")
+def get_achievement_members_report_csv(start_year: Optional[int] = None, end_year: Optional[int] = None):
+
+    if (start_year is None or end_year is None):
+        return rcode("NotFound")
+
+    error, achievement_members_report = Achievement.get_achievement_members_report(start_year,end_year)
+    if error:
+        return rcode(error)
+    
+    stream = io.StringIO()
+
+    result = {"Year": [], "Births": [], "Marriages": [], "Deaths": []}
+    for row in rows:
+        result['Year'].append(row['Year'])
+        result['Births'].append(row['Births'])
+        result['Marriages'].append(row['Marriages'])
+        result['Deaths'].append(row['Deaths'])
+    stream = io.StringIO()
+    df = pd.DataFrame(data=result)
+    df.to_csv(stream, index = False)
+    response = StreamingResponse(iter([stream.getvalue()]),
+                                 media_type="text/csv"
+                                )
+    response.headers["Content-Disposition"] = "attachment; filename=export.csv"
+    return response
+
+
 
 @router.get("/all_achievements")
 def get_all_achievements():
