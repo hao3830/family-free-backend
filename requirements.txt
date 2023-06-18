@@ -10,3 +10,4 @@ tqdm
 multipledispatch
 cryptography
 pandas
+openpyxl

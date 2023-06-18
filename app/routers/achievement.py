@@ -1,9 +1,10 @@
 import io
+import pandas as pd
 
 from logging import getLogger
 from fastapi import APIRouter, Form
 from typing import Optional
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 
 from src.models.achievement import Achievement
 from src.rcode import rcode
@@ -67,20 +68,18 @@ def get_achievement_members_report_csv(start_year: Optional[int] = None, end_yea
     
     stream = io.StringIO()
 
-    result = {"Year": [], "Births": [], "Marriages": [], "Deaths": []}
-    for row in rows:
-        result['Year'].append(row['Year'])
-        result['Births'].append(row['Births'])
-        result['Marriages'].append(row['Marriages'])
-        result['Deaths'].append(row['Deaths'])
-    stream = io.StringIO()
+    result = {"No.": [],"Type Achievement": [], "Count": []}
+    for idx,row in enumerate(achievement_members_report):
+        result['No.'].append(idx)
+        result['Type Achievement'].append(row['TENLOAITHANHTICH'])
+        result['Count'].append(row['COUNT_OCCURRENCES'])
+    # stream = io.StringIO()
+    file_path = 'data.xlsx'
     df = pd.DataFrame(data=result)
-    df.to_csv(stream, index = False)
-    response = StreamingResponse(iter([stream.getvalue()]),
-                                 media_type="text/csv"
-                                )
-    response.headers["Content-Disposition"] = "attachment; filename=export.csv"
-    return response
+    df.to_excel(file_path,
+              index=False)  
+
+    return FileResponse(file_path, filename=f'{start_year}_{end_year}.xlsx')
 
 
 

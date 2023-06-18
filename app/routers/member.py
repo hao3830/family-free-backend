@@ -4,7 +4,7 @@ import pandas as pd
 from logging import getLogger
 from typing import Optional
 from fastapi import APIRouter, Form
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 
 from src.models.member import Member
 from src.rcode import rcode
@@ -86,14 +86,12 @@ def get_csv(start_year: int, end_year:int):
         result['Births'].append(row['Births'])
         result['Marriages'].append(row['Marriages'])
         result['Deaths'].append(row['Deaths'])
-    stream = io.StringIO()
+    file_path = 'data.xlsx'
     df = pd.DataFrame(data=result)
-    df.to_csv(stream, index = False)
-    response = StreamingResponse(iter([stream.getvalue()]),
-                                 media_type="text/csv"
-                                )
-    response.headers["Content-Disposition"] = "attachment; filename=report.csv"
-    return response
+    df.to_excel(file_path,
+              index=False)  
+
+    return FileResponse(file_path, filename=f'{start_year}_{end_year}.xlsx')
 
 
 

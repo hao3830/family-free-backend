@@ -197,11 +197,11 @@ class Member:
             if id_relation == "01":
                 genration += 1
         if id_old_member is not None and id_relation is not None:
-            query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
-                    values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}","{genration}")'
+            query = f'INSERT INTO THANHVIEN ( HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
+                    values ("{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{id_old_member}","{id_relation}","{create_at}","{genration}")'
         else:
-             query = f'INSERT INTO THANHVIEN (MATHANHVIEN, HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, NGAYPHATSINH, THEHE)\
-                    values ("{id}","{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{create_at}","{genration}")'
+             query = f'INSERT INTO THANHVIEN ( HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, NGAYPHATSINH, THEHE)\
+                    values ("{name}","{sex}","{birthday}","{id_home_town}","{id_job}","{address}","{create_at}","{genration}")'
 
         logger.info(f"executing query: {query}")
         try:
