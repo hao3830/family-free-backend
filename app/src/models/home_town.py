@@ -64,7 +64,7 @@ class HomeTown:
     def insert(name):
         id = generate_random_string()
         
-        query = f'Insert into QUEQUAN (MAQUEQUAN, TENQUANHE) values ("{id}","{name}")'
+        query = f'Insert into QUEQUAN ( TENQUANHE) values ("{name}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

@@ -60,7 +60,7 @@ class DeadLocation:
     def insert(name):
         id = generate_random_string()
         
-        query = f'Insert into DIADIEMMAITANG (MADIADIEMMAITANG, TENDIADIEMMAITANG) values ("{id}", "{name}")'
+        query = f'Insert into DIADIEMMAITANG ( TENDIADIEMMAITANG) values ( "{name}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

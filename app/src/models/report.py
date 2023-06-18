@@ -100,7 +100,7 @@ class Report:
     @staticmethod
     def insert(year, number_of_births, number_of_marriages, number_of_deaths):
         id = generate_random_string()
-        query = f'INSERT INTO BAOCAOTANGGIAM(MABAOCAOTANGGIAM,NAM, SOLUONGSINH, SOLUONKETHON, SOLUONGMAT) VALUES("{id}","{year}", "{number_of_births}", "{number_of_marriages}", "{number_of_deaths}")'
+        query = f'INSERT INTO BAOCAOTANGGIAM(NAM, SOLUONGSINH, SOLUONKETHON, SOLUONGMAT) VALUES(,"{year}", "{number_of_births}", "{number_of_marriages}", "{number_of_deaths}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

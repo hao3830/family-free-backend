@@ -122,7 +122,7 @@ class Achievement:
     def insert(name, id_achievement_type, date, id_member):
         id = generate_random_string()
         
-        query = f"INSERT INTO THANHTICH (MATHANHTICH, HOVATEN, MALOAITHANHTICH, NGAYPHATSINH,MATHANHVIEN) VALUES ('{id}','{name}', '{id_achievement_type}', '{date}','{id_member}')"
+        query = f"INSERT INTO THANHTICH ( HOVATEN, MALOAITHANHTICH, NGAYPHATSINH,MATHANHVIEN) VALUES ('{name}', '{id_achievement_type}', '{date}','{id_member}')"
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

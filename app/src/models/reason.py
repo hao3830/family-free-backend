@@ -64,7 +64,7 @@ class Reason:
     @staticmethod
     def insert(name):
         id = generate_random_string()
-        query = f'Insert into NGUYENNHAN (MANGUYENNHAN,TENNGUYENNHAN) values ("{id}","{name}")'
+        query = f'Insert into NGUYENNHAN (TENNGUYENNHAN) values ("{name}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

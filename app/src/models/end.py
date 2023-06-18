@@ -97,7 +97,7 @@ class End:
     def insert(name, dead_date, id_reason, id_dead_location, id_member):
         id = generate_random_string()
 
-        query = f'Insert into KETTHUC (MAKETTHUC, HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG, MATHANHVIEN) values ("{id}","{name}", "{dead_date}", "{id_reason}", "{id_dead_location}","{id_member}")'
+        query = f'Insert into KETTHUC ( HOVATEN, NGAYGIOMAT, MANGUYENNHAN, MADIADIEMMAITANG, MATHANHVIEN) values ("{name}", "{dead_date}", "{id_reason}", "{id_dead_location}","{id_member}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

@@ -58,7 +58,7 @@ class Job:
     def insert(name):
         id = generate_random_string()
         
-        query = f'Insert into NGHENGHIEP (MANGHENGHIEP,TENNGHENGHIEP) values ("{id}","{name}")'
+        query = f'Insert into NGHENGHIEP (TENNGHENGHIEP) values ("{name}")'
         logger.info(f"executing query: {query}")
         try:
             exec_query(query)

@@ -63,7 +63,7 @@ class AchievementType:
     @staticmethod
     def insert(name):
         id = generate_random_string()
-        query = f'Insert into LOAITHANHTICH (MALOAITHANHTICH, TENLOAITHANHTICH) values ("{id}","{name}")'
+        query = f'Insert into LOAITHANHTICH ( TENLOAITHANHTICH) values ("{name}")'
         logger.info(f"executing query: {query}")
         
         try:

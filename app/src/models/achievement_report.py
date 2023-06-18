@@ -76,7 +76,7 @@ class AchievementReport:
     @staticmethod
     def insert(year, id_achievement_type, achievement_count):
         id = generate_random_string()
-        query = f"INSERT INTO BAOCAOTHANHTICH(MABAOCAOTHANHTICH, NAM, MALOAITHANHTICH, SOLUONGTHANHTICH) VALUES ('{id}',{year}, '{id_achievement_type}', {achievement_count})"
+        query = f"INSERT INTO BAOCAOTHANHTICH( NAM, MALOAITHANHTICH, SOLUONGTHANHTICH) VALUES ({year}, '{id_achievement_type}', {achievement_count})"
         try:
             exec_query(query)
             return None, None
