@@ -170,3 +170,11 @@ def delete_member(id: str = Form(None)):
         return rcode(error)
 
     return rcode(1000)
+
+@router.get("/check_delete")
+def check_delete(id: str):
+    error, _ = Member.check_delete(id)
+    if error:
+        return rcode(error)
+
+    return rcode(1000)

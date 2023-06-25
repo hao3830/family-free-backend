@@ -113,6 +113,7 @@ class Member:
         if id_relation is not None:
             if is_multi_condition:
                 query += " AND "
+            is_multi_condition = True
             query += f"MALOAIQUANHE = '{id_relation}'"
 
         if id_job is not None:
@@ -131,7 +132,8 @@ class Member:
             if is_multi_condition:
                 query += " AND "
             is_multi_condition = True
-            query += f" MATHANHVIENCU = '{id_old_member}'"
+            # query += f" MATHANHVIENCU = '{id_old_member}'"
+            query += f"MATHANHVIENCU IN (SELECT MATHANHVIEN FROM THANHVIEN WHERE MATHANHVIEN = '{id_old_member}' or (MATHANHVIENCU = '{id_old_member}' and MALOAIQUANHE = 'QH002') UNION (SELECT MATHANHVIENCU FROM THANHVIEN WHERE MATHANHVIEN = '{id_old_member}' and MALOAIQUANHE = 'QH002' ))"
 
         if create_at is not None:
             if is_multi_condition:
@@ -194,7 +196,7 @@ class Member:
 
             genration = old_members[0].generation
 
-            if id_relation == "01":
+            if id_relation == "QH001":
                 genration += 1
         if id_old_member is not None and id_relation is not None:
             query = f'INSERT INTO THANHVIEN ( HOVATEN, GIOITINH, NGAYGIOSINH, MAQUEQUAN, MANGHENGHIEP, DIACHI, MATHANHVIENCU, MALOAIQUANHE, NGAYPHATSINH, THEHE)\
@@ -234,7 +236,7 @@ class Member:
 
             genration = old_members[0].generation
 
-        if id_relation == "01":
+        if id_relation == "QH001":
             genration += 1
 
         query = f"update THANHVIEN set HOVATEN = '{name}', GIOITINH = {sex}, \
@@ -294,5 +296,24 @@ class Member:
             return None, rows
         except Exception as err:
             logger.error(f"can not execute query: {query}")
+            logger.error(err)
+            return "SQLExecuteError", None
+
+    @staticmethod
+    def check_delete(id):
+        # query = f"delete from THANHVIEN where MATHANHVIEN = '{id}'"
+        query = f"SELECT COUNT(*) AS 'count' FROM THANHVIEN WHERE MATHANHVIENCU = '{id}'"
+        logger.info(f"executing query: {query}")
+
+        try:
+            result = exec_query(query,mode="fetchall")
+            print(result)
+            count = result[1][0]['count']
+            if count > 0:
+                return "SQLExecuteError", None
+
+            return None, None
+        except Exception as err:
+            # logger.error(f"can not execute query: {check_query} or {delete_query}")
             logger.error(err)
             return "SQLExecuteError", None
